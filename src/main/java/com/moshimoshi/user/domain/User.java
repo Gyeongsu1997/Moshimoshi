@@ -1,9 +1,6 @@
 package com.moshimoshi.user.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
@@ -13,4 +10,8 @@ public class User {
     @Id
     @Column(name = "users_id")
     private Long id;
+
+    private String userId;
+    private String password;
+    private String email;
 }
