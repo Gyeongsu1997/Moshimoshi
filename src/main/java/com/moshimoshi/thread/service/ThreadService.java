@@ -1,11 +1,11 @@
 package com.moshimoshi.thread.service;
 
+import com.moshimoshi.exception.CommonException;
+import com.moshimoshi.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.repository.ThreadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +17,7 @@ public class ThreadService {
     }
 
     public void findOne(Long threadId) {
-        Optional<Thread> optional = threadRepository.findById(threadId);
+        Thread thread = threadRepository.findById(threadId)
+                .orElseThrow(() -> new CommonException(ErrorCode.THREAD_NOT_EXIST));
     }
 }

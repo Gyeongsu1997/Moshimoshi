@@ -1,12 +1,13 @@
 package com.moshimoshi.comment.domain;
 
+import com.moshimoshi.common.BaseTimeEntity;
 import com.moshimoshi.thread.domain.Thread;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class Comment {
+public class Comment extends BaseTimeEntity {
     @Id
     @Column(name = "comment_id")
     private Long id;
