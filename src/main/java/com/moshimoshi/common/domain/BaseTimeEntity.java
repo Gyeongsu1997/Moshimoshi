@@ -1,4 +1,4 @@
-package com.moshimoshi.common;
+package com.moshimoshi.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

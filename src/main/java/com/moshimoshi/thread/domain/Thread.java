@@ -1,7 +1,7 @@
 package com.moshimoshi.thread.domain;
 
 import com.moshimoshi.comment.domain.Comment;
-import com.moshimoshi.common.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 

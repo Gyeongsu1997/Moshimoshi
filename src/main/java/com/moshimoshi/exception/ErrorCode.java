@@ -14,7 +14,11 @@ public enum ErrorCode {
     /**
      * 스레드 관련 에러
      */
-    THREAD_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 스레드가 존재하지 않습니다.","");
+    THREAD_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 스레드가 존재하지 않습니다.",""),
+    /**
+     * 리포트(신고) 관련 에러
+     */
+    REPORT_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 리포트가 존재하지 않습니다.","");
 
     private final HttpStatus httpStatus;
     private final String message;

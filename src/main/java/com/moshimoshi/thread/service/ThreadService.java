@@ -20,4 +20,8 @@ public class ThreadService {
         Thread thread = threadRepository.findById(threadId)
                 .orElseThrow(() -> new CommonException(ErrorCode.THREAD_NOT_EXIST));
     }
+
+    public void deleteOne(Long threadId) {
+
+    }
 }

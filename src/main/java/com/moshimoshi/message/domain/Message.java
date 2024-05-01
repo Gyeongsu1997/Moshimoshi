@@ -1,15 +1,13 @@
 package com.moshimoshi.message.domain;
 
-import com.moshimoshi.common.BaseTimeEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.moshimoshi.common.domain.BaseTimeEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
 public class Message extends BaseTimeEntity {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
     private Long id;
 }

@@ -22,7 +22,7 @@ public class ThreadController {
     }
 
     @GetMapping("/{threadId}")
-    public String read(@PathVariable("threadId") Long threadId) {
+    public String show(@PathVariable("threadId") Long threadId) {
         return "abc";
     }
 
