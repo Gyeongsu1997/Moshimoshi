@@ -1,9 +1,16 @@
 package com.moshimoshi.user.domain;
 
 import com.moshimoshi.auth.domain.Authentication;
+import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.message.domain.ReceivedMessage;
+import com.moshimoshi.message.domain.SentMessage;
+import com.moshimoshi.thread.domain.Thread;
 import jakarta.persistence.*;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,4 +27,18 @@ public class User extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "authentication_id")
     private Authentication authentication;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Thread> threads = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer")
+    private List<Comment> comments = new ArrayList<>();
+
+    //todo 북마크한 스레드 리스트
+
+    @OneToMany(mappedBy = "sendUser")
+    private List<SentMessage> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recvUser")
+    private List<ReceivedMessage> receivedMessages = new ArrayList<>();
 }

@@ -12,8 +12,8 @@ import java.util.Optional;
 public class ReportRepository {
     private final EntityManager em;
 
-    public void save() {
-//        em.persist();
+    public void save(Report report) {
+        em.persist(report);
     }
 
     public Optional<Report> findById(Long id) {

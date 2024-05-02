@@ -1,14 +1,22 @@
 package com.moshimoshi.thread.controller;
 
+import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.PostRequest;
+import com.moshimoshi.thread.dto.ThreadResponse;
 import com.moshimoshi.thread.service.ThreadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/threads")
+@RequestMapping("/api/threads")
 public class ThreadController {
+    public static final String ANONYM = "익명";
     private final ThreadService threadService;
 
     @GetMapping
@@ -22,12 +30,15 @@ public class ThreadController {
     }
 
     @GetMapping("/{threadId}")
-    public String show(@PathVariable("threadId") Long threadId) {
-        return "abc";
+    public ThreadResponse show(@PathVariable("threadId") Long threadId) {
+        Thread thread = threadService.findOne(threadId);
+        return new ThreadResponse(ANONYM, thread.getContent(), thread.getCreatedAt());
     }
 
     @DeleteMapping("/{threadId}")
-    public String delete(@PathVariable("threadId") Long threadId) {
-        return "abc";
+    public ResponseEntity<?> delete(@PathVariable("threadId") Long threadId) throws URISyntaxException {
+        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
+                .location(new URI("/api/threads"))
+                .build();
     }
 }

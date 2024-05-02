@@ -1,6 +1,5 @@
 package com.moshimoshi.auth.domain;
 
-import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

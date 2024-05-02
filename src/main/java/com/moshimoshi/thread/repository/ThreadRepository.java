@@ -12,8 +12,8 @@ import java.util.Optional;
 public class ThreadRepository {
     private final EntityManager em;
 
-    public void save() {
-//        em.persist();
+    public void save(Thread thread) {
+        em.persist(thread);
     }
 
     public Optional<Thread> findById(Long id) {
@@ -21,7 +21,7 @@ public class ThreadRepository {
         return Optional.ofNullable(thread);
     }
 
-    public void deleteById(Long id) {
-
+    public void delete(Thread thread) {
+        em.remove(thread);
     }
 }

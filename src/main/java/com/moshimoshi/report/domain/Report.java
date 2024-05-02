@@ -11,4 +11,10 @@ public class Report extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private ReportReason reason;
+
+    @Enumerated(EnumType.STRING)
+    private ReportStatus status;
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reports")
+@RequestMapping("/api/reports")
 public class ReportController {
     private final ReportService reportService;
 
@@ -15,18 +15,4 @@ public class ReportController {
     public String send(@RequestBody ReportRequest reportRequest) {
         return "abdc";
     }
-
-    /**
-     * below here, only admin can call
-     */
-    @GetMapping
-    public String list() {
-        return "abc";
-    }
-
-    @GetMapping("/{reportId}")
-    public String show(@PathVariable("reportId") Long reportId) {
-        return "abc";
-    }
-
 }
