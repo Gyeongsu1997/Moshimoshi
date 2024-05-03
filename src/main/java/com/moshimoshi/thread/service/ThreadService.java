@@ -27,6 +27,7 @@ public class ThreadService {
 
     @Transactional
     public void deleteOne(Long threadId) {
-        threadRepository.delete(findOne(threadId));
+        Thread thread = findOne(threadId);
+        thread.deleteThread();
     }
 }

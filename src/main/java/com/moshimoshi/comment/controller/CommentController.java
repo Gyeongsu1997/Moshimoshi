@@ -33,5 +33,9 @@ public class CommentController {
         return "abc";
     }
 
-    //todo 대댓글 기능
+    //대댓글
+    @PostMapping("/{threadId}/comments/{commentId}/replies")
+    public String reply() {
+        return "abc";
+    }
 }

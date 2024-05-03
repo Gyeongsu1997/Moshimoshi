@@ -20,8 +20,4 @@ public class ThreadRepository {
         Thread thread = em.find(Thread.class, id);
         return Optional.ofNullable(thread);
     }
-
-    public void delete(Thread thread) {
-        em.remove(thread);
-    }
 }

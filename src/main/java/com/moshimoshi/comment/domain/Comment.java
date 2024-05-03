@@ -17,6 +17,7 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     private String content;
+    private String deleted; // Y or N
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -39,5 +40,9 @@ public class Comment extends BaseTimeEntity {
     public void addReply(Comment reply) {
         this.child.add(reply);
         reply.parent = this;
+    }
+
+    public void deleteComment() {
+        deleted = "Y";
     }
 }
