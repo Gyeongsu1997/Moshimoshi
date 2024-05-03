@@ -1,9 +1,13 @@
 package com.moshimoshi.comment.controller;
 
+import com.moshimoshi.comment.domain.Comment;
+import com.moshimoshi.comment.dto.CommentRequest;
+import com.moshimoshi.comment.dto.CommentResponse;
 import com.moshimoshi.comment.service.CommentService;
-import com.moshimoshi.thread.dto.PostRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,12 +16,15 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{threadId}/comments")
-    public String list() {
-        return "abc";
+    public List<CommentResponse> list(@PathVariable("threadId") Long threadId) {
+        return commentService.list(threadId)
+                .stream()
+                .map(CommentResponse::from)
+                .toList();
     }
 
     @PostMapping("/{threadId}/comments")
-    public String post(@RequestBody PostRequest postRequest) {
+    public String post(@RequestBody CommentRequest commentRequest) {
         return "abdc";
     }
 

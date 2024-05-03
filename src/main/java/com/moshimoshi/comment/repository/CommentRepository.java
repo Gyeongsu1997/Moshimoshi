@@ -1,5 +1,6 @@
 package com.moshimoshi.comment.repository;
 
+import com.moshimoshi.comment.domain.Comment;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Repository;
 public class CommentRepository {
     private final EntityManager em;
 
-    public void save() {
-//        em.persist();
+    public void save(Comment comment) {
+        em.persist(comment);
     }
+
+
 }

@@ -16,7 +16,6 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 @RequestMapping("/api/threads")
 public class ThreadController {
-    public static final String ANONYM = "익명";
     private final ThreadService threadService;
 
     @GetMapping
@@ -32,7 +31,7 @@ public class ThreadController {
     @GetMapping("/{threadId}")
     public ThreadResponse show(@PathVariable("threadId") Long threadId) {
         Thread thread = threadService.findOne(threadId);
-        return new ThreadResponse(ANONYM, thread.getContent(), thread.getCreatedAt());
+        return ThreadResponse.from(thread);
     }
 
     @DeleteMapping("/{threadId}")
