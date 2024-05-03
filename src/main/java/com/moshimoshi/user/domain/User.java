@@ -3,8 +3,7 @@ package com.moshimoshi.user.domain;
 import com.moshimoshi.auth.domain.Authentication;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseTimeEntity;
-import com.moshimoshi.message.domain.ReceivedMessage;
-import com.moshimoshi.message.domain.SentMessage;
+import com.moshimoshi.message.domain.UserMessage;
 import com.moshimoshi.thread.domain.Thread;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "users_id")
     private Long id;
 
-    private String userId;
+    private String username;
     private String password;
     private String email;
 
@@ -36,9 +35,6 @@ public class User extends BaseTimeEntity {
 
     //todo 북마크한 스레드 리스트
 
-    @OneToMany(mappedBy = "sendUser")
-    private List<SentMessage> sentMessages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "recvUser")
-    private List<ReceivedMessage> receivedMessages = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<UserMessage> userMessages = new ArrayList<>();
 }
