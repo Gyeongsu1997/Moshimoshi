@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @RequiredArgsConstructor
 public class WebSocketChatHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-    private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet(); //현재 연결된 세션들
+    public static final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet(); //현재 연결된 세션들
     private final Queue<WebSocketSession> ready = new ConcurrentLinkedQueue<>();
-    private final Set<WebSocketSession> running = ConcurrentHashMap.newKeySet();
-    private final Map<String, Set<WebSocketSession>> chatRoomMap = new ConcurrentHashMap<>();
+    public static final Set<WebSocketSession> running = ConcurrentHashMap.newKeySet();
+    public static final Map<String, Set<WebSocketSession>> chatRoomMap = new ConcurrentHashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
