@@ -17,7 +17,7 @@ public class Thread extends BaseTimeEntity {
     private Long id;
 
     private String content;
-    private String deleted; //Y or N
+    private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -29,13 +29,12 @@ public class Thread extends BaseTimeEntity {
     public static Thread of(String content, User writer) {
         Thread thread = new Thread();
         thread.content = content;
-        thread.deleted = "N";
         thread.writer = writer;
         writer.getThreads().add(thread);
         return thread;
     }
 
     public void deleteThread() {
-        deleted = "Y";
+        deleted = true;
     }
 }

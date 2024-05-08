@@ -18,10 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ThreadRepository threadRepository;
+    private final ThreadRepository jpaThreadRepository;
 
     public List<Comment> list(Long threadId) {
-        Thread thread = threadRepository.findById(threadId)
+        Thread thread = jpaThreadRepository.findById(threadId)
                 .orElseThrow(() -> new CommonException(ErrorCode.THREAD_NOT_EXIST));
         return new ArrayList<>(thread.getComments());
     }
