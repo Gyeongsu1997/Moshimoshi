@@ -2,6 +2,8 @@ package com.moshimoshi.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moshimoshi.common.Define;
+import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.dto.LoginRequest;
 import com.moshimoshi.user.dto.LoginResponse;
 import com.moshimoshi.user.service.UserService;
@@ -20,6 +22,7 @@ public class VerifyUserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         if (!"POST".equalsIgnoreCase(httpServletRequest.getMethod())) {
+            throw new CommonException(ErrorCode.METHOD_NOT_ALLOWED);
         }
         LoginRequest loginRequest = objectMapper.readValue(httpServletRequest.getReader(), LoginRequest.class);
         LoginResponse loginResponse = userService.login(loginRequest);

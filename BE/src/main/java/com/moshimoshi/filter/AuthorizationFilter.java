@@ -19,7 +19,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthorizationFilter implements Filter {
-    private final String[] allowedURIs = new String[] {"/api/users/login", "/api/auth/refresh/token", "/api/users"};
+    private final String[] allowedURIs = new String[] {"/api/login", "/api/auth/refresh/token", "/api/signup"};
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
 
