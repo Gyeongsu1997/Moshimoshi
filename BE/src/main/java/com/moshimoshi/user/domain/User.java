@@ -6,6 +6,7 @@ import com.moshimoshi.common.domain.BaseTimeEntity;
 import com.moshimoshi.message.domain.UserMessage;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.user.dto.LoginRequest;
+import com.moshimoshi.user.dto.SignUpRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -22,7 +23,9 @@ public class User extends BaseTimeEntity {
 
     private String loginId;
     private String password;
+    private String nickname;
     private String email;
+    private String profile;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -40,6 +43,17 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<UserMessage> userMessages = new ArrayList<>();
+
+    public static User createUser(SignUpRequest signUpRequest) {
+        User user = new User();
+        user.loginId = signUpRequest.getLoginId();
+        user.password = signUpRequest.getPassword();
+        user.nickname = signUpRequest.getNickname();
+        user.email = signUpRequest.getEmail();
+        user.profile = signUpRequest.getProfile();
+        user.role = Role.USER;
+        return user;
+    }
 
     public boolean isCorrectPassword(LoginRequest loginRequest) {
         return this.loginId.equals(loginRequest.getLoginId()) && this.password.equals(loginRequest.getPassword());

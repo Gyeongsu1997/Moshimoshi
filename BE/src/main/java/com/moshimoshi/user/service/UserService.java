@@ -1,10 +1,12 @@
 package com.moshimoshi.user.service;
 
+import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.common.exception.CommonException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.User;
 import com.moshimoshi.user.dto.LoginRequest;
 import com.moshimoshi.user.dto.LoginResponse;
+import com.moshimoshi.user.dto.SignUpRequest;
 import com.moshimoshi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    @Transactional
+    public BaseResponse<?> signUp(SignUpRequest signUpRequest){
+        checkDuplicateLoginId(signUpRequest.getLoginId());
+        User user = signUpRequest.toEntity();
+        userRepository.save(user);
+        return BaseResponse.from("성공적으로 회원가입 되었습니다.");
+    }
+
+    public void checkDuplicateLoginId(String loginId) {
+        Optional<User> optional = userRepository.findByLoginId(loginId);
+        if (optional.isPresent())
+            throw new CommonException(ErrorCode.DUPLICATE_USERID);
+    }
 
     public LoginResponse login(LoginRequest loginRequest){
         User user = userRepository.findByLoginId(loginRequest.getLoginId())
