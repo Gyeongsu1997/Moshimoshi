@@ -13,6 +13,7 @@ public class ThreadResponse {
     private Long threadId;
     private String writer;
     private String content;
+    private int thumbsUp;
     private LocalDateTime createdAt;
 
     public static ThreadResponse from(Thread thread) {
@@ -20,6 +21,7 @@ public class ThreadResponse {
                 .threadId(thread.getId())
                 .writer(Define.ANONYM)
                 .content(thread.getContent())
+                .thumbsUp(thread.getThumbsUp())
                 .createdAt(thread.getCreatedAt())
                 .build();
     }

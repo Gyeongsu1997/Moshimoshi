@@ -17,6 +17,7 @@ public class Thread extends BaseTimeEntity {
     private Long id;
 
     private String content;
+    private int thumbsUp;
     private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,6 +30,8 @@ public class Thread extends BaseTimeEntity {
     public static Thread of(String content, User writer) {
         Thread thread = new Thread();
         thread.content = content;
+        thread.thumbsUp = 0;
+        thread.deleted = false;
         thread.writer = writer;
         writer.getThreads().add(thread);
         return thread;
