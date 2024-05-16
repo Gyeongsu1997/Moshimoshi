@@ -6,7 +6,7 @@ import lombok.Getter;
 public class MessageRequest {
     private Long threadId;
     private Long commentId;
-    private String sendUserID;
-    private String recvUserID;
+    private Long sendUserID;
+    private Long recvUserID;
     private String content;
 }
