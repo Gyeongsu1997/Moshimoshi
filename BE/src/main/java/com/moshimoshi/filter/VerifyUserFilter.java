@@ -1,6 +1,7 @@
 package com.moshimoshi.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moshimoshi.common.Define;
 import com.moshimoshi.user.dto.LoginRequest;
 import com.moshimoshi.user.dto.LoginResponse;
 import com.moshimoshi.user.service.UserService;
@@ -14,7 +15,6 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class VerifyUserFilter implements Filter {
-    public static final String AUTHENTICATED = "authenticated";
     private final ObjectMapper objectMapper;
     private final UserService userService;
 
@@ -25,7 +25,7 @@ public class VerifyUserFilter implements Filter {
         }
         LoginRequest loginRequest = objectMapper.readValue(httpServletRequest.getReader(), LoginRequest.class);
         LoginResponse loginResponse = userService.login(loginRequest);
-        request.setAttribute(AUTHENTICATED, AuthenticatedUser.from(loginResponse));
+        request.setAttribute(Define.AUTHENTICATED, AuthenticatedUser.from(loginResponse));
         chain.doFilter(request, response);
     }
 }
