@@ -1,15 +1,22 @@
 package com.moshimoshi.comment.domain;
 
+import com.moshimoshi.comment.dto.CommentRequest;
 import com.moshimoshi.common.domain.BaseTimeEntity;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +24,8 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     private String content;
+    private int commentNumber;
+    private boolean anonymous;
     private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,12 +46,29 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
-    public void addReply(Comment reply) {
-        this.child.add(reply);
-        reply.parent = this;
+    public static Comment of(User writer, CommentRequest commentRequest, Thread thread) {
+        Comment comment = Comment.builder()
+                .content(commentRequest.getContent())
+                .commentNumber(thread.getCommentSequence())
+                .anonymous(commentRequest.isAnonymous())
+                .deleted(false)
+                .writer(writer)
+                .thread(thread)
+                .build();
+        writer.getComments().add(comment);
+        return comment;
     }
 
     public void deleteComment() {
-        deleted = false;
+        deleted = true;
+    }
+
+    public boolean isWriter(User user) {
+        return user != null && user.getId().equals(this.writer.getId());
+    }
+
+    public void addReply(Comment reply) {
+        this.child.add(reply);
+        reply.parent = this;
     }
 }

@@ -1,16 +1,23 @@
 package com.moshimoshi.thread.domain;
 
 import com.moshimoshi.comment.domain.Comment;
+import com.moshimoshi.comment.dto.CommentRequest;
 import com.moshimoshi.common.domain.BaseTimeEntity;
-import com.moshimoshi.thread.dto.PostRequest;
+import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Thread extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +28,24 @@ public class Thread extends BaseTimeEntity {
     private int thumbsUp;
     private boolean anonymous;
     private boolean deleted;
+    private int commentSequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User writer;
 
-    @OneToMany(mappedBy = "thread")
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Thread of(PostRequest postRequest, User writer) {
-        Thread thread = new Thread();
-        thread.content = postRequest.getContent();
-        thread.thumbsUp = 0;
-        thread.anonymous = postRequest.isAnonymous();
-        thread.deleted = false;
-        thread.writer = writer;
+    public static Thread of(User writer, ThreadPostRequest threadPostRequest) {
+        Thread thread = Thread.builder()
+                .content(threadPostRequest.getContent())
+                .thumbsUp(0)
+                .anonymous(threadPostRequest.isAnonymous())
+                .deleted(false)
+                .commentSequence(0)
+                .writer(writer)
+                .build();
         writer.getThreads().add(thread);
         return thread;
     }
@@ -46,5 +56,20 @@ public class Thread extends BaseTimeEntity {
 
     public boolean isWriter(User user) {
         return user != null && user.getId().equals(this.writer.getId());
+    }
+
+    public List<Comment> getAvailableComments() {
+        return this.comments.stream().filter(c -> !c.isDeleted()).toList();
+    }
+
+    public Comment addComment(User user, CommentRequest commentRequest) {
+        this.commentSequence++; //동시성 이슈 발생 가능
+        Comment comment = Comment.of(user, commentRequest, this);
+        this.comments.add(comment);
+        return comment;
+    }
+
+    public int thumbsUp() {
+        return ++this.thumbsUp; //동시성 이슈 발생 가능
     }
 }

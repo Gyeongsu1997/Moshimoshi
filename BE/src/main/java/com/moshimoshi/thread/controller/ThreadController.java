@@ -2,7 +2,7 @@ package com.moshimoshi.thread.controller;
 
 import com.moshimoshi.auth.resolver.Login;
 import com.moshimoshi.thread.domain.Thread;
-import com.moshimoshi.thread.dto.PostRequest;
+import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.thread.dto.ThreadListResponse;
 import com.moshimoshi.thread.dto.ThreadResponse;
 import com.moshimoshi.thread.service.ThreadService;
@@ -33,12 +33,12 @@ public class ThreadController {
     }
 
     /**
-     * Handler which is below here requires user to be logged in
+     * Handlers which are below here require user to be logged in
      */
 
     @PostMapping
-    public ResponseEntity<?> post(@Login User user, @RequestBody PostRequest postRequest) throws URISyntaxException {
-        threadService.post(user, postRequest);
+    public ResponseEntity<?> post(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) throws URISyntaxException {
+        threadService.post(user, threadPostRequest);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads"))
                 .build();

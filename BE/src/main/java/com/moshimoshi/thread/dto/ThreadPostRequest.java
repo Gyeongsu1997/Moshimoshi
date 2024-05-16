@@ -3,7 +3,7 @@ package com.moshimoshi.thread.dto;
 import lombok.Getter;
 
 @Getter
-public class PostRequest {
+public class ThreadPostRequest {
     private String content;
     private boolean anonymous;
 }

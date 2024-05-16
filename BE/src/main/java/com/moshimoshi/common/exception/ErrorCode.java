@@ -18,9 +18,10 @@ public enum ErrorCode {
     USER_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 유저가 존재하지 않습니다.",""),
     PASSWORD_INCORRECT(HttpStatus.BAD_REQUEST, "비밀번호가 틀렸습니다.","비밀번호를 다시 입력해 주세요."),
     /**
-     * 스레드 관련 에러
+     * 스레드 및 댓글 관련 에러
      */
-    THREAD_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 스레드가 존재하지 않습니다.",""),
+    THREAD_NOT_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 스레드입니다.",""),
+    COMMENT_NOT_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.",""),
     /**
      * 리포트(신고) 관련 에러
      */

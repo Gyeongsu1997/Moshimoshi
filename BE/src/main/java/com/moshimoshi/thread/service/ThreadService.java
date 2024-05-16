@@ -3,7 +3,7 @@ package com.moshimoshi.thread.service;
 import com.moshimoshi.common.exception.CommonException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
-import com.moshimoshi.thread.dto.PostRequest;
+import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.thread.repository.ThreadRepository;
 import com.moshimoshi.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ThreadService {
     private static final int PAGE_SIZE = 10;
-
     private final ThreadRepository threadRepository;
 
     public Page<Thread> list(int pageNumber) {
@@ -28,8 +27,8 @@ public class ThreadService {
     }
 
     @Transactional
-    public void post(User user, PostRequest postRequest) {
-        Thread thread = Thread.of(postRequest, user);
+    public void post(User user, ThreadPostRequest threadPostRequest) {
+        Thread thread = Thread.of(user, threadPostRequest);
         threadRepository.save(thread);
     }
 
