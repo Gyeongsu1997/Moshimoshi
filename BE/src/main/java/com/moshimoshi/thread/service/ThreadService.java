@@ -1,7 +1,7 @@
 package com.moshimoshi.thread.service;
 
-import com.moshimoshi.exception.CommonException;
-import com.moshimoshi.exception.ErrorCode;
+import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.repository.ThreadRepository;
 import lombok.RequiredArgsConstructor;

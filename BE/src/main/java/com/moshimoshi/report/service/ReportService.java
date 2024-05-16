@@ -1,7 +1,7 @@
 package com.moshimoshi.report.service;
 
-import com.moshimoshi.exception.CommonException;
-import com.moshimoshi.exception.ErrorCode;
+import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.report.domain.Report;
 import com.moshimoshi.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;

@@ -5,6 +5,7 @@ import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseTimeEntity;
 import com.moshimoshi.message.domain.UserMessage;
 import com.moshimoshi.thread.domain.Thread;
+import com.moshimoshi.user.dto.LoginRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -19,9 +20,11 @@ public class User extends BaseTimeEntity {
     @Column(name = "users_id")
     private Long id;
 
-    private String username;
+    private String loginId;
     private String password;
     private String email;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "authentication_id")
@@ -37,4 +40,8 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<UserMessage> userMessages = new ArrayList<>();
+
+    public boolean isCorrectPassword(LoginRequest loginRequest) {
+        return this.loginId.equals(loginRequest.getLoginId()) && this.password.equals(loginRequest.getPassword());
+    }
 }

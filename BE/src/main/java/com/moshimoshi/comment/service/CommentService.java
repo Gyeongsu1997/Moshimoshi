@@ -2,8 +2,8 @@ package com.moshimoshi.comment.service;
 
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.comment.repository.CommentRepository;
-import com.moshimoshi.exception.CommonException;
-import com.moshimoshi.exception.ErrorCode;
+import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.repository.ThreadRepository;
 import lombok.RequiredArgsConstructor;

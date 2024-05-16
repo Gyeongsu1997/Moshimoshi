@@ -1,4 +1,4 @@
-package com.moshimoshi.exception;
+package com.moshimoshi.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,8 @@ public enum ErrorCode {
      * 인증 및 인가 관련 에러
      */
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Access Token이 만료되었습니다.","Access Token을 재발급하기 위해 Refresh Token이 필요합니다."),
+    USER_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 유저가 존재하지 않습니다.",""),
+    PASSWORD_INCORRECT(HttpStatus.BAD_REQUEST, "비밀번호가 틀렸습니다.","비밀번호를 다시 입력해 주세요."),
     /**
      * 스레드 관련 에러
      */

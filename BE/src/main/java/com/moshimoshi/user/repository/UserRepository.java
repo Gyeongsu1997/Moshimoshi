@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,7 +22,11 @@ public class UserRepository {
         return Optional.ofNullable(user);
     }
 
-    public Optional<User> findByUserId(String userId) {
-        return null;
+    public Optional<User> findByLoginId(String loginId) {
+        return em.createQuery("select u from User u where u.loginId = :loginId", User.class)
+                .setParameter("loginId", loginId)
+                .getResultList()
+                .stream()
+                .findAny();
     }
 }
