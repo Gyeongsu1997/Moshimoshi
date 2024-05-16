@@ -1,7 +1,8 @@
-package com.moshimoshi.filter;
+package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moshimoshi.auth.dto.Jwt;
+import com.moshimoshi.auth.domain.AuthenticatedUser;
+import com.moshimoshi.auth.dto.TokenResponse;
 import com.moshimoshi.auth.utils.JwtProvider;
 import com.moshimoshi.common.Define;
 import com.moshimoshi.user.service.UserService;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class JwtFilter implements Filter {
+public class IssueTokenFilter implements Filter {
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
     private final UserService userService;
@@ -24,10 +25,11 @@ public class JwtFilter implements Filter {
         Map<String, Object> claims = new HashMap<>();
         String authenticatedUserJson = objectMapper.writeValueAsString(authenticatedUser);
         claims.put(Define.AUTHENTICATED, authenticatedUserJson);
-        Jwt jwt = jwtProvider.createJwt(claims);
-        userService.updateRefreshToken(authenticatedUser.getLoginId(), jwt.getRefreshToken());
-        String jwtJson = objectMapper.writeValueAsString(jwt);
+        TokenResponse tokenResponse = jwtProvider.createJwt(claims);
+        userService.updateRefreshToken(authenticatedUser.getLoginId(), tokenResponse.getRefreshToken());
+        String jwtJson = objectMapper.writeValueAsString(tokenResponse);
         response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
         response.getWriter().write(jwtJson);
     }
 }

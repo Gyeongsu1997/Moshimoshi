@@ -1,9 +1,9 @@
-package com.moshimoshi.user.dto;
+package com.moshimoshi.auth.dto;
 
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class LogInRequest {
     private String loginId;
     private String password;
 }

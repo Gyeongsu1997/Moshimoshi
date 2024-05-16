@@ -1,6 +1,6 @@
 package com.moshimoshi.auth.utils;
 
-import com.moshimoshi.auth.dto.Jwt;
+import com.moshimoshi.auth.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -20,10 +20,10 @@ import java.util.Map;
 public class JwtProvider {
     private final JwtProperties jwtProperties;
 
-    public Jwt createJwt(Map<String, Object> claims) {
+    public TokenResponse createJwt(Map<String, Object> claims) {
         String accessToken = createToken(claims, getExpireDateAccessToken());
         String refreshToken = createToken(new HashMap<>(), getExpireDateRefreshToken());
-        return Jwt.of(accessToken, refreshToken);
+        return TokenResponse.of(accessToken, refreshToken);
     }
 
     public String createToken(Map<String, Object> claims, Date expireDate) {

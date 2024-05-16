@@ -1,4 +1,4 @@
-package com.moshimoshi.filter;
+package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moshimoshi.common.exception.CommonException;
@@ -21,8 +21,6 @@ public class ExceptionHandlingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(request, response);
-        } catch (ExpiredJwtException e) {
-            throw new CommonException(ErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (CommonException e) {
             setErrorResponse((HttpServletResponse) response, e);
         } catch (Exception e) {
@@ -34,6 +32,7 @@ public class ExceptionHandlingFilter implements Filter {
     private void setErrorResponse(HttpServletResponse httpServletResponse, CommonException e) throws IOException {
         httpServletResponse.setStatus(e.getHttpStatus().value());
         httpServletResponse.setContentType("application/json");
+        httpServletResponse.setCharacterEncoding("utf-8");
         String json = objectMapper.writeValueAsString(ErrorResponse.from(e));
         httpServletResponse.getWriter().write(json);
     }

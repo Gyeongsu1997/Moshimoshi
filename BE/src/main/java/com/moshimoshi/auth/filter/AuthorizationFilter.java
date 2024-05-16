@@ -1,13 +1,15 @@
-package com.moshimoshi.filter;
+package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moshimoshi.auth.domain.AuthenticatedUser;
 import com.moshimoshi.auth.utils.JwtProvider;
 import com.moshimoshi.common.Define;
 import com.moshimoshi.common.exception.CommonException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthorizationFilter implements Filter {
-    private final String[] allowedURIs = new String[] {"/api/signup", "/api/login", "/api/auth/refresh/token"};
+    private final String[] allowedURIs = new String[] {"/api/users/signup", "/api/auth/login", "/api/auth/refresh", "/api/threads*"};
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
 
@@ -33,11 +35,15 @@ public class AuthorizationFilter implements Filter {
         if (!isTokenExist(httpServletRequest)) {
             throw new CommonException(ErrorCode.ACCESS_TOKEN_NOT_EXIST);
         }
-        String token = getToken(httpServletRequest);
-        AuthenticatedUser authenticatedUser = getAuthenticatedUser(token);
-        authorize(httpServletRequest.getRequestURI(), authenticatedUser);
-        log.info("[{}] logged in", authenticatedUser.getLoginId());
-        chain.doFilter(request, response);
+        try {
+            String token = getToken(httpServletRequest);
+            AuthenticatedUser authenticatedUser = getAuthenticatedUser(token);
+            authorize(httpServletRequest.getRequestURI(), authenticatedUser);
+            log.info("[{}] logged in", authenticatedUser.getLoginId());
+            chain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            throw new CommonException(ErrorCode.ACCESS_TOKEN_EXPIRED);
+        }
     }
 
     private boolean isAllowedUris(String requestURI) {

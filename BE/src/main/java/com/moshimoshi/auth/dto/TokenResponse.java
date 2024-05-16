@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Jwt {
+public class TokenResponse {
     private String accessToken;
     private String refreshToken;
 
-    public static Jwt of(String accessToken, String refreshToken) {
-        return new Jwt(accessToken, refreshToken);
+    public static TokenResponse of(String accessToken, String refreshToken) {
+        return new TokenResponse(accessToken, refreshToken);
     }
 }

@@ -5,7 +5,7 @@ import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseTimeEntity;
 import com.moshimoshi.message.domain.UserMessage;
 import com.moshimoshi.thread.domain.Thread;
-import com.moshimoshi.user.dto.LoginRequest;
+import com.moshimoshi.auth.dto.LogInRequest;
 import com.moshimoshi.user.dto.SignUpRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "authentication_id")
     private Authentication authentication;
 
@@ -52,10 +52,11 @@ public class User extends BaseTimeEntity {
         user.email = signUpRequest.getEmail();
         user.profile = signUpRequest.getProfile();
         user.role = Role.USER;
+        user.authentication = Authentication.of(user);
         return user;
     }
 
-    public boolean isCorrectPassword(LoginRequest loginRequest) {
+    public boolean isCorrectPassword(LogInRequest loginRequest) {
         return this.loginId.equals(loginRequest.getLoginId()) && this.password.equals(loginRequest.getPassword());
     }
 

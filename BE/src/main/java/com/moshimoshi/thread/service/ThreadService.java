@@ -3,7 +3,9 @@ package com.moshimoshi.thread.service;
 import com.moshimoshi.common.exception.CommonException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
+import com.moshimoshi.thread.dto.PostRequest;
 import com.moshimoshi.thread.repository.ThreadRepository;
+import com.moshimoshi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,14 +23,14 @@ public class ThreadService {
     private final ThreadRepository threadRepository;
 
     public Page<Thread> list(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("id").descending()); //TODO: thead의 deleted 속성에 대한 처리
         return threadRepository.findAll(pageable);
     }
 
     @Transactional
-    public void post() {
-//        Thread thread = Thread.of();
-//        threadRepository.save(thread);
+    public void post(User user, PostRequest postRequest) {
+        Thread thread = Thread.of(postRequest, user);
+        threadRepository.save(thread);
     }
 
     public Thread findOne(Long threadId) {
@@ -41,9 +43,11 @@ public class ThreadService {
     }
 
     @Transactional
-    public void deleteOne(Long threadId) {
+    public void deleteOne(User user, Long threadId) {
         Thread thread = findOne(threadId);
-        //현재 로그인한 유저와 thread.getWriter가 같은 유저인지 검증
+        if (!thread.isWriter(user)) {
+            throw new CommonException(ErrorCode.FORBIDDEN);
+        }
         thread.deleteThread();
     }
 }

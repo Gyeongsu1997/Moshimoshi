@@ -1,4 +1,4 @@
-package com.moshimoshi.user.dto;
+package com.moshimoshi.auth.dto;
 
 import com.moshimoshi.user.domain.Role;
 import com.moshimoshi.user.domain.User;
@@ -7,11 +7,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LoginResponse {
+public class LogInResponse {
     private String loginId;
     private Role role;
 
-    public static LoginResponse from(User user) {
-        return new LoginResponse(user.getLoginId(), user.getRole());
+    public static LogInResponse from(User user) {
+        return new LogInResponse(user.getLoginId(), user.getRole());
     }
 }

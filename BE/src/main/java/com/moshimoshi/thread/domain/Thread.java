@@ -2,6 +2,7 @@ package com.moshimoshi.thread.domain;
 
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.thread.dto.PostRequest;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,9 +28,9 @@ public class Thread extends BaseTimeEntity {
     @OneToMany(mappedBy = "thread")
     private List<Comment> comments = new ArrayList<>();
 
-    public static Thread of(String content, User writer) {
+    public static Thread of(PostRequest postRequest, User writer) {
         Thread thread = new Thread();
-        thread.content = content;
+        thread.content = postRequest.getContent();
         thread.thumbsUp = 0;
         thread.deleted = false;
         thread.writer = writer;
@@ -39,5 +40,9 @@ public class Thread extends BaseTimeEntity {
 
     public void deleteThread() {
         deleted = true;
+    }
+
+    public boolean isWriter(User user) {
+        return user != null && user.getId().equals(this.writer.getId());
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,6 +24,14 @@ public class UserRepository {
     public Optional<User> findByLoginId(String loginId) {
         return em.createQuery("select u from User u where u.loginId = :loginId", User.class)
                 .setParameter("loginId", loginId)
+                .getResultList()
+                .stream()
+                .findAny();
+    }
+
+    public Optional<User> findByRefreshToken(String refreshToken) {
+        return em.createQuery("select u from User u where u.authentication.refreshToken = :refreshToken", User.class)
+                .setParameter("refreshToken", refreshToken)
                 .getResultList()
                 .stream()
                 .findAny();

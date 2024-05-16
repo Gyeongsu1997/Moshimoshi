@@ -1,11 +1,12 @@
-package com.moshimoshi.filter;
+package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moshimoshi.auth.domain.AuthenticatedUser;
 import com.moshimoshi.common.Define;
 import com.moshimoshi.common.exception.CommonException;
 import com.moshimoshi.common.exception.ErrorCode;
-import com.moshimoshi.user.dto.LoginRequest;
-import com.moshimoshi.user.dto.LoginResponse;
+import com.moshimoshi.auth.dto.LogInRequest;
+import com.moshimoshi.auth.dto.LogInResponse;
 import com.moshimoshi.user.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,9 +25,9 @@ public class VerifyUserFilter implements Filter {
         if (!"POST".equalsIgnoreCase(httpServletRequest.getMethod())) {
             throw new CommonException(ErrorCode.METHOD_NOT_ALLOWED);
         }
-        LoginRequest loginRequest = objectMapper.readValue(httpServletRequest.getReader(), LoginRequest.class);
-        LoginResponse loginResponse = userService.login(loginRequest);
-        request.setAttribute(Define.AUTHENTICATED, AuthenticatedUser.from(loginResponse));
+        LogInRequest logInRequest = objectMapper.readValue(httpServletRequest.getReader(), LogInRequest.class);
+        LogInResponse logInResponse = userService.login(logInRequest);
+        request.setAttribute(Define.AUTHENTICATED, AuthenticatedUser.from(logInResponse));
         chain.doFilter(request, response);
     }
 }
