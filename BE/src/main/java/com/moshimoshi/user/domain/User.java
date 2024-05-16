@@ -44,4 +44,8 @@ public class User extends BaseTimeEntity {
     public boolean isCorrectPassword(LoginRequest loginRequest) {
         return this.loginId.equals(loginRequest.getLoginId()) && this.password.equals(loginRequest.getPassword());
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.authentication.updateRefreshToken(refreshToken);
+    }
 }

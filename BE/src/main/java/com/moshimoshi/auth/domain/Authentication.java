@@ -14,4 +14,8 @@ public class Authentication {
 
 //    @OneToOne(mappedBy = "authentication", fetch = FetchType.LAZY)
 //    private User user;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

@@ -1,6 +1,7 @@
 package com.moshimoshi.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moshimoshi.auth.dto.Jwt;
 import com.moshimoshi.auth.utils.JwtProvider;
 import com.moshimoshi.common.Define;
 import com.moshimoshi.user.service.UserService;
@@ -23,5 +24,10 @@ public class JwtFilter implements Filter {
         Map<String, Object> claims = new HashMap<>();
         String authenticatedUserJson = objectMapper.writeValueAsString(authenticatedUser);
         claims.put(Define.AUTHENTICATED, authenticatedUserJson);
+        Jwt jwt = jwtProvider.createJwt(claims);
+        userService.updateRefreshToken(authenticatedUser.getLoginId(), jwt.getRefreshToken());
+        String jwtJson = objectMapper.writeValueAsString(jwt);
+        response.setContentType("application/json");
+        response.getWriter().write(jwtJson);
     }
 }

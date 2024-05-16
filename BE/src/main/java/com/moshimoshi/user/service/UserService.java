@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -22,5 +24,12 @@ public class UserService {
         if (!user.isCorrectPassword(loginRequest))
             throw new CommonException(ErrorCode.PASSWORD_INCORRECT);
         return LoginResponse.from(user);
+    }
+
+    @Transactional
+    public void updateRefreshToken(String loginId, String refreshToken){
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_EXIST));
+        user.updateRefreshToken(refreshToken);
     }
 }

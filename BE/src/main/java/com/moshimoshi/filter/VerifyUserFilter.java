@@ -8,11 +8,9 @@ import com.moshimoshi.user.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-@Slf4j
 @RequiredArgsConstructor
 public class VerifyUserFilter implements Filter {
     private final ObjectMapper objectMapper;
