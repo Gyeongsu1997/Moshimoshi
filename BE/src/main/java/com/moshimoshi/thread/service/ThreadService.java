@@ -23,8 +23,8 @@ public class ThreadService {
     private final ThreadRepository threadRepository;
 
     public Page<Thread> list(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("id").descending()); //TODO: thead의 deleted 속성에 대한 처리
-        return threadRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("id").descending());
+        return threadRepository.findByDeleted(false, pageable);
     }
 
     @Transactional
