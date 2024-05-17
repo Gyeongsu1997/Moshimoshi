@@ -24,7 +24,7 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     private String content;
-    private int commentNumber;
+    private int commentOrder;
     private boolean anonymous;
     private boolean deleted;
 
@@ -49,7 +49,7 @@ public class Comment extends BaseTimeEntity {
     public static Comment of(User writer, CommentRequest commentRequest, Thread thread) {
         Comment comment = Comment.builder()
                 .content(commentRequest.getContent())
-                .commentNumber(thread.getCommentSequence())
+                .commentOrder(thread.getCommentSequence())
                 .anonymous(commentRequest.isAnonymous())
                 .deleted(false)
                 .writer(writer)

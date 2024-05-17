@@ -49,4 +49,10 @@ public class ThreadService {
         }
         thread.deleteThread();
     }
+
+    @Transactional
+    public void thumbsUp(Long threadId) {
+        Thread thread = findOne(threadId);
+        thread.thumbsUp();
+    }
 }

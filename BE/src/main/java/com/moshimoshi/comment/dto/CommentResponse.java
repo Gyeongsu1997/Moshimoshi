@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class CommentResponse {
     private Long commentId;
     private String content;
-    private int commentNumber;
+    private int commentOrder;
     private boolean anonymous;
     private Long userId;
     private Long threadId;
@@ -22,7 +22,7 @@ public class CommentResponse {
         return CommentResponse.builder()
                 .commentId(comment.getId())
                 .content(comment.getContent())
-                .commentNumber(comment.getCommentNumber())
+                .commentOrder(comment.getCommentOrder())
                 .anonymous(comment.isAnonymous())
                 .userId(comment.getWriter().getId())
                 .threadId(comment.getThread().getId())
