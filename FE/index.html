@@ -97,7 +97,7 @@
 								  익명
 								</label>
 							</div>
-							<textarea id="threadTextarea" class="form-control" placeholder="내용을 입력하세요." rows="3"></textarea>
+							<textarea id="tfPostThread" class="form-control" placeholder="내용을 입력하세요." rows="3"></textarea>
 							<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 								<button id="btnPostThread" type="button" class="btn btn-primary">글쓰기</button>
 							</div>
@@ -107,7 +107,7 @@
 								<div>
 									<i id="profile"></i>
 									<div id="nickname"></div>
-									<div id="createdTime"></div>
+									<div id="createdAt"></div>
 								</div>
 								<div id="content">안녕하십니까</div>
 								<div>
@@ -209,10 +209,38 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script>
-		$article = document.createElement('article');
-		$div = document.createElement('div');
+		var makeArticle = function (threadInfo) {
+			$article = document.createElement('article');
+
+			$divTop = document.createElement('div');
+			
+			$iProfile = document.createElement('i');
+			$divNickname = document.createElement('div');
+			$divCreatedAt = document.createElement('div');
+			$divCreatedAt.innerText = threadInfo.createdAt;
+
+
+			$divMid = document.createElement('div');
+			$divMid.innerText = threadInfo.content;
+
+			$divBot = document.createElement('div');
+			$divComment = document.createElement('div');
+			$divThumbsUp = document.createElement('div');
+			$divImage = document.createElement('div');
+
+			$article.appendChild($divTop);
+			$article.appendChild($divMid);
+			$article.appendChild($divBot);
+			return $article;
+		};
+
+		
 		$threads = document.getElementById('threads');
 		// $threads.appendChild($article);
+
+		fetch('http://localhost:8080/api/threads', option)
+		.then(res => res.text())
+		.then(text => console.log(text));
 	</script>
 </body>
 </html>
