@@ -62,6 +62,10 @@ public class Thread extends BaseTimeEntity {
         return this.comments.stream().filter(c -> !c.isDeleted()).toList();
     }
 
+    public int getAvailableNumberOfComments() {
+        return getAvailableComments().size();
+    }
+
     public synchronized Comment addComment(User user, CommentRequest commentRequest) {
         this.commentSequence++; //동시성 이슈 발생 가능
         Comment comment = Comment.of(user, commentRequest, this);
