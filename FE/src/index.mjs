@@ -1,4 +1,6 @@
-// let makeArticle = function (threadInfo) {
+import * as thread from './api/thread.mjs';
+
+// const makeArticle = function (threadInfo) {
 // 	$article = document.createElement('article');
 
 // 	$divTop = document.createElement('div');
@@ -30,3 +32,14 @@
 // fetch('http://localhost:8080/api/threads', option)
 // .then(res => res.text())
 // .then(text => console.log(text));
+
+const btnPostThread = document.getElementById('btnPostThread');
+const tfPostThread = document.getElementById('tfPostThread');
+const chkAnonymous = document.getElementById('chkAnonymous');
+
+btnPostThread.addEventListener('click', function () {
+	const content = tfPostThread.value;
+	const anonymous = chkAnonymous.checked;
+	const request = new thread.PostRequest(content, anonymous);
+	thread.postThread(request);
+});

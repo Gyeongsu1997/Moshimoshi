@@ -36,4 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
+# Dependency directories
+node_modules/
+
 application.properties
