@@ -19,7 +19,6 @@ const postThread = async function (request) {
 		if (response.ok) {
 			const data = await response.json();
 			return data;
-			//리다이렉트
 		} else {
 			//
 			return null;

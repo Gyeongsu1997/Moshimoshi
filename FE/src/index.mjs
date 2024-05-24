@@ -1,4 +1,4 @@
-import * as thread from './api/thread.mjs';
+import * as thread from './api/threadAPI.mjs';
 
 // const makeArticle = function (threadInfo) {
 // 	$article = document.createElement('article');
