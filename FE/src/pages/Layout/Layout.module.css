@@ -1,0 +1,15 @@
+.layout {
+	display: flex;
+}
+
+.layout > :nth-child(1) {
+	flex-grow: 3;
+}
+
+.layout > :nth-child(2) {
+	flex-grow: 4;
+}
+
+.layout > :nth-child(3) {
+	flex-grow: 3;
+}

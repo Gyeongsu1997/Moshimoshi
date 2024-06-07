@@ -8,15 +8,16 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NotFound from './pages/NotFound';
 
+import ThreadListPage from './pages/ThreadListPage';
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Header />
         <Routes>
-          <Route index element={<HomePage />} />
+          <Route index element={<ThreadListPage />} />
           <Route path="/auth">
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

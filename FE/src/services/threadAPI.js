@@ -1,12 +1,12 @@
-import { BASE_URL } from '../constants/constants.mjs';
-import * as token from '../utils/token.mjs';
+import { BASE_URL } from '../constants/constants.js';
+import * as token from '../utils/token.js';
 
-const PostRequest = function (content, anonymous) {
+export const PostRequest = function (content, anonymous) {
 	this.content = content;
 	this.anonymous = anonymous;
 };
 
-const postThread = async function (request) {
+export const postThread = async function (request) {
 	try {
 		const response = await fetch(`${BASE_URL}/api/threads`, {
 			method: 'POST',
@@ -29,4 +29,7 @@ const postThread = async function (request) {
 	}
 };
 
-export { PostRequest, postThread };
+export async function getThreads(pageNumber = 0) {
+	const response = await fetch(`${BASE_URL}/api/threads?page=${pageNumber}`);
+	return response;
+}
