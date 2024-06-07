@@ -1,0 +1,7 @@
+.thread-page {
+	display: flex;
+}
+
+.thread-page aside {
+	flex-basis: 10rem;
+}
