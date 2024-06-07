@@ -14,6 +14,7 @@ public class ThreadResponse {
     private int thumbsUp;
     private boolean anonymous;
     private Long userId;
+    private int numberOfComments;
     private LocalDateTime createdAt;
 
     public static ThreadResponse from(Thread thread) {
@@ -23,6 +24,7 @@ public class ThreadResponse {
                 .thumbsUp(thread.getThumbsUp())
                 .anonymous(thread.isAnonymous())
                 .userId(thread.getWriter().getId())
+                .numberOfComments(thread.getAvailableNumberOfComments())
                 .createdAt(thread.getCreatedAt())
                 .build();
     }

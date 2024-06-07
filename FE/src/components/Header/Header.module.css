@@ -1,0 +1,10 @@
+.header {
+	display: flex;
+	height: 6rem;
+	background-color: deepskyblue;
+	color: white;
+}
+
+.header nav {
+	margin-left: auto
+}

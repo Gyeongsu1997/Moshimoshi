@@ -1,0 +1,10 @@
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+	justify-content: flex-start;
+}
+
+.sidebar li {
+	padding: 1rem;
+}

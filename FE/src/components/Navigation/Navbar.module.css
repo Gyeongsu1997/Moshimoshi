@@ -1,0 +1,8 @@
+.navbar {
+	display: flex;
+	justify-content: space-around
+}
+
+.navbar li {
+	padding: 1rem;
+}
