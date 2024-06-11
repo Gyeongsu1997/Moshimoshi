@@ -1,47 +1,59 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useFetch } from '../hooks/useFetch';
+import useFetch from '../hooks/useFetch';
 import { getThreads } from '../services/threadAPI';
 import Layout from './Layout/Layout';
 import ThreadList from '../components/Thread/ThreadList';
 
 function ThreadListPage() {
-	const [pageNumber, setPageNumber] = useState(0);
 	const [threads, setThreads] = useState([]);
+	const [page, setPage] = useState(0);
+	const [hasNext, setHasNext] = useState(true);
 	
-	const [state] = useFetch(() => getThreads(pageNumber), [pageNumber]);
+	const [state] = useFetch(() => getThreads(page), [page]);
 	const { loading, data, error } = state;
 
 	const target = useRef(null);
 
 	const handleObserver = useCallback((entries) => {
 		const target = entries[0];
-		if (target.isIntersecting && !loading && !data.isLast) {
-			setPageNumber((prev) => prev + 1);
+		if (target.isIntersecting && !loading && hasNext) {
+			setPage((prev) => prev + 1);
 		}
-	}, [loading, data.isLast]);
+	}, [loading, hasNext]);
 
 	const observer = useMemo(() => { 
-		return new IntersectionObserver(handleObserver, {
-			threshold: 0
-		});
+		return new IntersectionObserver(handleObserver);
 	}, [handleObserver]);
 
 	useEffect(() => {
-		observer.observe(target.current);
-	}, [observer]);
+		const observedTarget = target.current;
+		if (observedTarget) {
+			observer.observe(observedTarget);
+		}
+		return () => {
+			if (observedTarget) {
+				observer.unobserve(observedTarget);
+			};
+		};
+	}, [observer]);	
 
-	if (loading) return <div>로딩중..</div>;
+	useEffect(() => {
+		if (data) {
+			setThreads(prev => [...prev, ...(data.list)]);
+			setHasNext(data.hasNext);
+		}
+	}, [data]);
+
 	if (error) return <div>에러가 발생했습니다</div>;
-  	if (!data) return null;
-
-	setThreads(prev => [...prev, ...(data.list)]);
+	if (page === 0 && loading) return <div>로딩중..</div>;
+  	if (page === 0 && !data) return <div>데이터가 없습니다</div>;
 
 	return (
 		<>
 			<Layout>
 				<ThreadList threads={threads} />
 			</Layout>
-			<div ref={target}></div>
+			{hasNext && <div ref={target}></div>}
 		</>	
 	);
 }

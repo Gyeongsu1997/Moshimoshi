@@ -7,11 +7,11 @@ const sideItems = [
 		name: "Home",
 	},
 	{
-		id: 1,
+		id: 2,
 		name: "공지사항",
 	},
 	{
-		id: 1,
+		id: 3,
 		name: "채팅하기",
 	},
 ];

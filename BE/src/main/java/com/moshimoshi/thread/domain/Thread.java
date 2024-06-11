@@ -29,6 +29,7 @@ public class Thread extends BaseTimeEntity {
     private boolean anonymous;
     private boolean deleted;
     private int commentSequence;
+    private int numberOfActiveComments;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -58,18 +59,15 @@ public class Thread extends BaseTimeEntity {
         return user != null && user.getId().equals(this.writer.getId());
     }
 
-    public List<Comment> getAvailableComments() {
+    public List<Comment> getActiveComments() {
         return this.comments.stream().filter(c -> !c.isDeleted()).toList();
-    }
-
-    public int getAvailableNumberOfComments() {
-        return getAvailableComments().size();
     }
 
     public synchronized Comment addComment(User user, CommentRequest commentRequest) {
         this.commentSequence++; //동시성 이슈 발생 가능
         Comment comment = Comment.of(user, commentRequest, this);
         this.comments.add(comment);
+        numberOfActiveComments++;
         return comment;
     }
 

@@ -1,12 +1,10 @@
 import Thread from "./Thread";
 
-function ThreadList() {
-	const threads = [1, 2, 3, 4, 5];
-	
+function ThreadList({ threads }) {	
 	return (
 		<div>
 			{threads.map(thread => {
-				return <Thread />
+				return <Thread key={thread.threadId} thread={thread} />
 			})}
 		</div>
 	);

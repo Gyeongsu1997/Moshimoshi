@@ -29,7 +29,7 @@ export const postThread = async function (request) {
 	}
 };
 
-export async function getThreads(pageNumber = 0) {
-	const response = await fetch(`${BASE_URL}/api/threads?page=${pageNumber}`);
+export async function getThreads(page = 0) {
+	const response = await fetch(`${BASE_URL}/api/threads?page=${page}`);
 	return response;
 }

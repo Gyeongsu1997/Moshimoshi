@@ -61,6 +61,7 @@ public class Comment extends BaseTimeEntity {
 
     public void deleteComment() {
         deleted = true;
+        // thread의 numberOfActiveComment--;
     }
 
     public boolean isWriter(User user) {
