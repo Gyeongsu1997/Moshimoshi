@@ -39,4 +39,4 @@ out/
 # Dependency directories
 node_modules/
 
-application.properties
+/src/main/resources/

@@ -24,7 +24,7 @@ public class ThreadResponse {
                 .thumbsUp(thread.getThumbsUp())
                 .anonymous(thread.isAnonymous())
                 .userId(thread.getWriter().getId())
-                .numberOfComments(thread.getAvailableNumberOfComments())
+                .numberOfComments(thread.getNumberOfActiveComments())
                 .createdAt(thread.getCreatedAt())
                 .build();
     }

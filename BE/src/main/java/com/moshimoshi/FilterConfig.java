@@ -36,10 +36,18 @@ public class FilterConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    public FilterRegistrationBean<Filter> corsFilter() {
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new CorsFilter());
+        filterRegistrationBean.setOrder(1);
+        return filterRegistrationBean;
+    }
+
+    @Bean
     public FilterRegistrationBean<Filter> verifyUserFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new VerifyUserFilter(objectMapper, userService));
-        filterRegistrationBean.setOrder(1);
+        filterRegistrationBean.setOrder(2);
         filterRegistrationBean.addUrlPatterns("/api/auth/login");
         return filterRegistrationBean;
     }
@@ -48,7 +56,7 @@ public class FilterConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<Filter> issueTokenFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new IssueTokenFilter(jwtProvider, objectMapper, userService));
-        filterRegistrationBean.setOrder(2);
+        filterRegistrationBean.setOrder(3);
         filterRegistrationBean.addUrlPatterns("/api/auth/login");
         return filterRegistrationBean;
     }
@@ -57,7 +65,7 @@ public class FilterConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<Filter> refreshTokenFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new RefreshTokenFilter(jwtProvider, objectMapper, userService));
-        filterRegistrationBean.setOrder(1);
+        filterRegistrationBean.setOrder(2);
         filterRegistrationBean.addUrlPatterns("/api/auth/refresh");
         return filterRegistrationBean;
     }
@@ -66,7 +74,7 @@ public class FilterConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<Filter> authorizationFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new AuthorizationFilter(jwtProvider, objectMapper));
-        filterRegistrationBean.setOrder(2);
+        filterRegistrationBean.setOrder(3);
         return filterRegistrationBean;
     }
 }

@@ -41,7 +41,7 @@ public class CommentService {
 
     public List<Comment> list(Long threadId) {
         Thread thread = findThread(threadId);
-        return thread.getAvailableComments();
+        return thread.getActiveComments();
     }
 
     @Transactional
