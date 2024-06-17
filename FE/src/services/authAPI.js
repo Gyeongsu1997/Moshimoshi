@@ -1,5 +1,6 @@
 import { BASE_URL } from '../constants/constants.js';
-import { getRefreshToken, setToken } from '../utils/token.js';
+import * as StatusCode from '../constants/StatusCode.js';
+import { getAccessToken, getRefreshToken, setToken, removeToken } from '../utils/token.js';
 
 export async function postLogin({ loginId, password }) {
 	try {
@@ -14,58 +15,73 @@ export async function postLogin({ loginId, password }) {
 
 		if (response.ok) {
 			const data = await response.json();
-			return {
-				success: true,
-				data
-			};
+			setToken("accessToken", data.accessToken);
+            setToken("refreshToken", data.refreshToken);
+			return StatusCode.SUCCESS;
 		} else {
-			//예외처리
-			return {
-				success: false,
-				// 에러에 대한 정보
-			};
+			return StatusCode.UNKNOWN;
 		}
 	} catch (e) {
-		//예외 처리
-		return {
-			success: false,
-			// 에러에 대한 정보 (e.toString())
-		};
+		return StatusCode.UNKNOWN;
 	}
 }
 
-export async function postRefresh() {
-	try {
-		const refreshToken = getRefreshToken();
+async function postRefresh() {
+	const refreshToken = getRefreshToken();
+	if (!refreshToken) {
+		throw new Error(StatusCode.AUTH_FAILED);
+	}
 
-		if (!refreshToken) {
-			// 예외처리
-			return {
+	const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ refreshToken })
+	});
 
-			};
-		}
-
-		const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ refreshToken })
-		});
-
-		if (response.ok) {
-			const data = await response.json();
-			setToken("accessToken", data.accessToken);
-            setToken("refreshToken", data.refreshToken);
-			return data.accessToken; // 재요청
-		} else {
-			//throw new Error("Refresh token is invalid or expired.");
-		}
-	} catch (e) {
-		//예외 처리
+	if (response.ok) {
+		const data = await response.json();
+		setToken("accessToken", data.accessToken);
+		setToken("refreshToken", data.refreshToken);
+		return data.accessToken;
+	} else {
+		throw new Error(StatusCode.AUTH_FAILED);
 	}
 };
 
-export async function authRequest() {
+export async function authRequest(url, options) {
+	try {
+		const accessToken = getAccessToken();
+		if (!accessToken) {
+			throw new Error(StatusCode.AUTH_FAILED);
+		}
 
+		let response = await fetch(url, {
+			...options,
+			headers: {
+				...options.headers,
+				Authorization: `Bearer ${accessToken}`
+			}
+		});
+
+		if (response.status === 401) { //access token 만료 상태코드
+			const newAccessToken = await postRefresh();
+			response = await fetch(url, {
+				...options,
+				headers: {
+					...options.headers,
+					Authorization: `Bearer ${newAccessToken}`
+				}
+			});
+		}
+
+		return response;
+	} catch (e) {
+		if (e.message === StatusCode.AUTH_FAILED) {
+			removeToken('accessToken');
+			removeToken('refreshToken');
+		}
+		throw e;
+	}
 }

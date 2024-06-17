@@ -7,8 +7,8 @@ import Header from './components/Header/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NotFound from './pages/NotFound';
-
-import ThreadListPage from './pages/ThreadListPage';
+import ThreadListPage from './pages/Thread/ThreadListPage';
+import ThreadWritePage from './pages/Thread/ThreadWritePage';
 
 function App() {
   return (
@@ -19,6 +19,8 @@ function App() {
           <Route path="/auth">
             <Route path="login" element={<LoginPage />} />
           </Route>
+          <Route path="/threads" element={<ThreadListPage />} />
+          <Route path="/threads/write" element={<ThreadWritePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

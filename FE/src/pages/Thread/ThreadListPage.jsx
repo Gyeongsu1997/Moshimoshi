@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import useFetch from '../hooks/useFetch';
-import { getThreads } from '../services/threadAPI';
-import Layout from './Layout/Layout';
-import ThreadList from '../components/Thread/ThreadList';
+import useFetch from '../../hooks/useFetch';
+import { getThreads } from '../../services/threadAPI';
+import Layout from '../Layout/Layout';
+import ThreadList from '../../components/Thread/ThreadList';
 
 function ThreadListPage() {
 	const [threads, setThreads] = useState([]);

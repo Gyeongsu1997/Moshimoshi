@@ -1,31 +1,30 @@
 import { BASE_URL } from '../constants/constants.js';
-import * as token from '../utils/token.js';
+import { authRequest } from './authAPI.js';
+import * as StatusCode from '../constants/StatusCode.js'
 
-export const PostRequest = function (content, anonymous) {
-	this.content = content;
-	this.anonymous = anonymous;
-};
-
-export const postThread = async function (request) {
+export async function postThread({ content, anonymous }) {
 	try {
-		const response = await fetch(`${BASE_URL}/api/threads`, {
+		const response = await authRequest(`${BASE_URL}/api/threads`, {
 			method: 'POST',
 			headers: {
-				'Authorization': `Bearer ${token.getAccessToken()}`,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(request)
+			body: JSON.stringify({
+				content,
+				anonymous
+			})
 		});
+
 		if (response.ok) {
-			const data = await response.json();
-			return data;
+			return StatusCode.SUCCESS;
 		} else {
-			//
-			return null;
+			return StatusCode.UNKNOWN;
 		}
 	} catch (e) {
-		//예외 처리
-		return null;
+		if (e.message === StatusCode.AUTH_FAILED) {
+			return StatusCode.AUTH_FAILED;
+		}
+		return StatusCode.UNKNOWN;
 	}
 };
 

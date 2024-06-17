@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuthDispatch } from "../contexts/AuthContext";
 import { removeToken } from "../utils/token";
 
-function LogoutPage() {
+function LogOut() {
 	removeToken('accessToken');
 	removeToken('refreshToken');
 
@@ -12,4 +12,4 @@ function LogoutPage() {
 	return <Navigate to="/" replace={true} />;
 }
 
-export default LogoutPage;
+export default LogOut;

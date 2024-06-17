@@ -1,15 +1,18 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { removeToken } from "../utils/token";
+import { getAccessToken } from "../utils/token";
 
 const initialState = {
-	isLoggedIn: false
+	isLoggedIn: getAccessToken() != null ? true : false
 };
 
 function authReducer(state, action) {
 	switch (action.type) {
+		case 'LOGIN':
+			return {
+				...state,
+				isLoggedIn: true
+			};
 		case 'LOGOUT':
-			removeToken('accessToken');
-			removeToken('refreshToken');
 			return {
 				...state,
 				isLoggedIn: false
