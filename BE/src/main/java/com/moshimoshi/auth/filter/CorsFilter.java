@@ -19,7 +19,6 @@ public class CorsFilter implements Filter {
         httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
 
         if ("OPTIONS".equalsIgnoreCase(httpServletRequest.getMethod())) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         }
         chain.doFilter(request, response);

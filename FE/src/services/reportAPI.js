@@ -2,7 +2,7 @@ import { BASE_URL } from '../constants/constants.js';
 import { authRequest } from './authAPI.js';
 import * as StatusCode from '../constants/StatusCode.js'
 
-export async function postThread({ content, anonymous }) {
+export async function postReport({ content, anonymous }) {
 	try {
 		const response = await authRequest(`${BASE_URL}/api/threads`, {
 			method: 'POST',
@@ -26,9 +26,4 @@ export async function postThread({ content, anonymous }) {
 		}
 		return StatusCode.UNKNOWN;
 	}
-};
-
-export async function getThreads(page = 0) {
-	const response = await fetch(`${BASE_URL}/api/threads?page=${page}`);
-	return response;
 }

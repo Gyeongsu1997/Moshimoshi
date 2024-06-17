@@ -1,0 +1,33 @@
+.btn-blue {
+	background-color: deepskyblue;
+	border-style: solid;
+	border-color: white;
+	border-radius: 8px;
+	color: white;
+	font-weight: bold;
+}
+
+.btn-light {
+	background-color: white;
+	border-style: solid;
+	border-color: deepskyblue;
+	border-radius: 8px;
+	color: deepskyblue;
+	font-weight: bold;
+}
+
+.flex {
+	display: flex;
+	margin-top: 1rem;
+	justify-content: center;
+	height: 3rem;
+	background-color: deepskyblue;
+}
+
+.flex2 {
+	display: flex;
+	margin-top: 1rem;
+	justify-content: center;
+	height: 3rem;
+	background-color: white;
+}

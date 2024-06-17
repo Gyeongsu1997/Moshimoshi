@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthDispatch } from '../contexts/AuthContext';
 import { postLogin } from '../services/authAPI';
-import { setToken } from '../utils/token';
+import * as StatusCode from '../constants/StatusCode';
+import Layout from './Layout/Layout';
 
 function LoginPage() {
 	const navigate = useNavigate();
@@ -25,15 +26,13 @@ function LoginPage() {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		const { success, data, error, status, message } = await postLogin({
+		const status = await postLogin({
 			loginId,
 			password
 		});
 
-		if (success) {
-			setToken("accessToken", data.accessToken);
-            setToken("refreshToken", data.refreshToken);
-			// dispatch({ type: 'LOGOUT' });
+		if (status === StatusCode.SUCCESS) {
+			dispatch({ type: 'LOGIN' });
             navigate("/", { replace: true });
 		} else {
 			setInputs({
@@ -47,32 +46,34 @@ function LoginPage() {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleLogin}>
-				<label htmlFor="loginId">아이디</label>
-				<input
-					type="text"
-					name="loginId"
-					value={loginId}
-					onChange={onChange}
-					placeholder="아이디를 입력해 주세요."
-				/>
-				<label htmlFor="password">비밀번호</label>
-				<input
-					type="password"
-					name="password"
-					value={password}
-					onChange={onChange}
-					placeholder="비밀번호를 입력해 주세요."
-				/>
-				<button type="submit">로그인</button>
-			</form>
+		<Layout>
 			<div>
-				<button>ID 찾기</button>
-				<button>비밀번호 찾기</button>
-				<button onClick={() => navigate('/signup')}>회원가입</button>
+				<form onSubmit={handleLogin}>
+					<label htmlFor="loginId">아이디</label>
+					<input
+						type="text"
+						name="loginId"
+						value={loginId}
+						onChange={onChange}
+						placeholder="아이디를 입력해 주세요."
+					/>
+					<label htmlFor="password">비밀번호</label>
+					<input
+						type="password"
+						name="password"
+						value={password}
+						onChange={onChange}
+						placeholder="비밀번호를 입력해 주세요."
+					/>
+					<button type="submit">로그인</button>
+				</form>
+				<div>
+					<button>ID 찾기</button>
+					<button>비밀번호 찾기</button>
+					<button onClick={() => navigate('/signup')}>회원가입</button>
+				</div>
 			</div>
-		</div>
+		</Layout>
 	);
 }
 
