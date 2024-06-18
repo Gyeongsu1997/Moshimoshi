@@ -1,6 +1,7 @@
 package com.moshimoshi.thread.controller;
 
 import com.moshimoshi.auth.resolver.Login;
+import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.thread.dto.ThreadListResponse;
@@ -22,14 +23,14 @@ public class ThreadController {
     private final ThreadService threadService;
 
     @GetMapping
-    public ThreadListResponse list(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
-        return ThreadListResponse.of(threadService.list(pageNumber));
+    public BaseResponse<ThreadListResponse> list(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
+        return BaseResponse.of(ThreadListResponse.of(threadService.list(pageNumber)));
     }
 
     @GetMapping("/{threadId}")
-    public ThreadResponse show(@PathVariable Long threadId) {
+    public BaseResponse<ThreadResponse> show(@PathVariable Long threadId) {
         Thread thread = threadService.findOne(threadId);
-        return ThreadResponse.from(thread);
+        return BaseResponse.of(ThreadResponse.from(thread));
     }
 
     /**

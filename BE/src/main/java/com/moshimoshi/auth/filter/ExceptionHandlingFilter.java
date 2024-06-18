@@ -2,7 +2,7 @@ package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moshimoshi.common.exception.BusinessException;
-import com.moshimoshi.common.exception.ErrorResponse;
+import com.moshimoshi.common.dto.ErrorResponse;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
