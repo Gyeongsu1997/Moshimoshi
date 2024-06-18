@@ -4,20 +4,20 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class CommonException extends RuntimeException {
+public class BusinessException extends RuntimeException {
     private final HttpStatus httpStatus;
+    private final int code;
     private final String message;
-    private final String solution;
 
-    public CommonException(HttpStatus httpStatus, String message, String solution) {
+    public BusinessException(HttpStatus httpStatus, int code, String message) {
         this.httpStatus = httpStatus;
+        this.code = code;
         this.message = message;
-        this.solution = solution;
     }
 
-    public CommonException(ErrorCode errorCode) {
+    public BusinessException(ErrorCode errorCode) {
         this.httpStatus = errorCode.getHttpStatus();
+        this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
-        this.solution = errorCode.getSolution();
     }
 }

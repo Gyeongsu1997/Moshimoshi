@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ErrorResponse {
+    private int code;
     private String message;
-    private String solution;
 
-    public static ErrorResponse from(CommonException e) {
-        return new ErrorResponse(e.getMessage(), e.getSolution());
+    public static ErrorResponse from(BusinessException e) {
+        return new ErrorResponse(e.getCode(), e.getMessage());
     }
 }

@@ -1,6 +1,6 @@
 package com.moshimoshi.report.service;
 
-import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.report.domain.Report;
 import com.moshimoshi.report.repository.ReportRepository;
@@ -20,7 +20,7 @@ public class ReportService {
 
     public void findOne(Long reportId) {
         Report report = reportRepository.findById(reportId)
-                .orElseThrow(() -> new CommonException(ErrorCode.REPORT_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
     }
 
     public void deleteOne(Long reportId) {

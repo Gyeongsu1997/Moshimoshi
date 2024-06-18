@@ -1,6 +1,6 @@
 package com.moshimoshi.thread.service;
 
-import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
@@ -34,9 +34,9 @@ public class ThreadService {
 
     public Thread findOne(Long threadId) {
         Thread thread = threadRepository.findById(threadId)
-                .orElseThrow(() -> new CommonException(ErrorCode.THREAD_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         if (thread.isDeleted()) {
-            throw new CommonException(ErrorCode.THREAD_NOT_EXIST);
+            throw new BusinessException(ErrorCode.NOT_FOUND);
         }
         return thread;
     }
@@ -45,7 +45,7 @@ public class ThreadService {
     public void deleteOne(User user, Long threadId) {
         Thread thread = findOne(threadId);
         if (!thread.isWriter(user)) {
-            throw new CommonException(ErrorCode.FORBIDDEN);
+            throw new BusinessException(ErrorCode.FORBIDDEN);
         }
         thread.deleteThread();
     }

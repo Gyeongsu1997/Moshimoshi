@@ -1,7 +1,7 @@
 package com.moshimoshi.user.service;
 
 import com.moshimoshi.common.dto.BaseResponse;
-import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.auth.domain.AuthenticatedUser;
 import com.moshimoshi.user.domain.User;
@@ -23,7 +23,7 @@ public class UserService {
 
     public User findByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
     }
 
     @Transactional
@@ -37,13 +37,13 @@ public class UserService {
     public void checkDuplicateLoginId(String loginId) {
         Optional<User> optional = userRepository.findByLoginId(loginId);
         if (optional.isPresent())
-            throw new CommonException(ErrorCode.DUPLICATE_USERID);
+            throw new BusinessException(ErrorCode.DUPLICATE_ID);
     }
 
     public LogInResponse login(LogInRequest loginRequest){
         User user = findByLoginId(loginRequest.getLoginId());
         if (!user.isCorrectPassword(loginRequest))
-            throw new CommonException(ErrorCode.PASSWORD_INCORRECT);
+            throw new BusinessException(ErrorCode.INCORRECT_PASSWORD);
         return LogInResponse.from(user);
     }
 
@@ -55,7 +55,7 @@ public class UserService {
 
     public AuthenticatedUser findByRefreshToken(String refreshToken) {
         User user = userRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new CommonException(ErrorCode.USER_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
         return AuthenticatedUser.of(user);
     }
 }
