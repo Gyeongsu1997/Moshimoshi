@@ -12,4 +12,8 @@ public class ErrorResponse {
     public static ErrorResponse from(BusinessException e) {
         return new ErrorResponse(e.getCode(), e.getMessage());
     }
+
+    public static ErrorResponse of(ErrorCode errorCode) {
+        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
+    }
 }

@@ -17,7 +17,7 @@ public class BaseResponse<T> {
         return new BaseResponse<>(message);
     }
 
-    public static <T> BaseResponse<T> of (String message, T data) {
+    public static <T> BaseResponse<T> of(String message, T data) {
         return new BaseResponse<>(message, data);
     }
 }

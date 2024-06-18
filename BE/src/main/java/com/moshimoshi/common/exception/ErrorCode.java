@@ -12,6 +12,7 @@ public enum ErrorCode {
      */
     NOT_FOUND(HttpStatus.NOT_FOUND, 100, "Resource Not Found"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, 110, "Method Not Allowed"),
+    UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 900, "Unexpected Error"),
 
     /**
      * 인증 및 인가 관련 에러

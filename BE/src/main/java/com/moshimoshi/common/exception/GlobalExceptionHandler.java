@@ -14,4 +14,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getHttpStatus())
                 .body(ErrorResponse.from(e));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("handleUnexpectedException", e);
+        return ResponseEntity.status(ErrorCode.UNEXPECTED_ERROR.getHttpStatus())
+                .body(ErrorResponse.of(ErrorCode.UNEXPECTED_ERROR));
+    }
 }
