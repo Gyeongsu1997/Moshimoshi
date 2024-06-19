@@ -34,7 +34,7 @@ public class UserService {
         return user.getLoginId();
     }
 
-    public void checkDuplicateLoginId(String loginId) {
+    private void checkDuplicateLoginId(String loginId) {
         Optional<User> optional = userRepository.findByLoginId(loginId);
         if (optional.isPresent())
             throw new BusinessException(ErrorCode.DUPLICATE_ID);

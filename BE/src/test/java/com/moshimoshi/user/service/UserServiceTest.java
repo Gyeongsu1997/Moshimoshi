@@ -1,6 +1,8 @@
 package com.moshimoshi.user.service;
 
 import com.moshimoshi.common.dto.BaseResponse;
+import com.moshimoshi.common.exception.BusinessException;
+import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.User;
 import com.moshimoshi.user.dto.SignUpRequest;
 import com.moshimoshi.user.repository.UserRepository;
@@ -28,7 +30,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("회원가입 성공")
+    @DisplayName("회원가입: 성공")
     void signUpSuccess() {
         //given
         SignUpRequest request = signUpRequest();
@@ -45,7 +47,28 @@ class UserServiceTest {
         //verify
         verify(userRepository).findByLoginId(anyString());
         verify(userRepository).save(any(User.class));
+    }
 
+    @Test
+    @DisplayName("회원가입: 중복 아이디")
+    void signUpDuplicateID() {
+        //given
+        SignUpRequest request = signUpRequest();
+
+        when(userRepository.findByLoginId(anyString()))
+                .thenReturn(Optional.of(new User()));
+
+        //when
+        BusinessException exception = assertThrows(BusinessException.class, () -> userService.signUp(request));
+
+        //then
+        assertEquals(ErrorCode.DUPLICATE_ID.getHttpStatus(), exception.getHttpStatus());
+        assertEquals(ErrorCode.DUPLICATE_ID.getCode(), exception.getCode());
+        assertEquals(ErrorCode.DUPLICATE_ID.getMessage(), exception.getMessage());
+
+        //verify
+        verify(userRepository).findByLoginId(anyString());
+        verify(userRepository, times(0)).save(any(User.class));
     }
 
     private SignUpRequest signUpRequest() {
