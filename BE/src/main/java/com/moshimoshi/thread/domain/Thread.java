@@ -6,10 +6,7 @@ import com.moshimoshi.common.domain.BaseTimeEntity;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,7 @@ import java.util.List;
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Thread extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +42,7 @@ public class Thread extends BaseTimeEntity {
                 .anonymous(threadPostRequest.isAnonymous())
                 .deleted(false)
                 .commentSequence(0)
+                .numberOfActiveComments(0)
                 .writer(writer)
                 .build();
         writer.getThreads().add(thread);

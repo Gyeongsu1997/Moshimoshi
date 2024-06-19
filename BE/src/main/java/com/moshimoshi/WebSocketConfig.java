@@ -1,4 +1,4 @@
-package com.moshimoshi.chat;
+package com.moshimoshi;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

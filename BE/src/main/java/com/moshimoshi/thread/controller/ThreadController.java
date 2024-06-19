@@ -38,11 +38,9 @@ public class ThreadController {
      */
 
     @PostMapping
-    public ResponseEntity<?> post(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) throws URISyntaxException {
+    public BaseResponse<?> post(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) throws URISyntaxException {
         threadService.post(user, threadPostRequest);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
-                .location(new URI("/api/threads"))
-                .build();
+        return BaseResponse.success();
     }
 
     @DeleteMapping("/{threadId}")

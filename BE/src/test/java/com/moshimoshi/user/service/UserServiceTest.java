@@ -1,6 +1,5 @@
 package com.moshimoshi.user.service;
 
-import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.User;
@@ -9,28 +8,25 @@ import com.moshimoshi.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @InjectMocks
-    private UserService userService;
+    UserService userService;
 
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
-    @Test
     @DisplayName("회원가입: 성공")
+    @Test
     void signUpSuccess() {
         //given
         SignUpRequest request = signUpRequest();
@@ -49,8 +45,8 @@ class UserServiceTest {
         verify(userRepository).save(any(User.class));
     }
 
-    @Test
     @DisplayName("회원가입: 중복 아이디")
+    @Test
     void signUpDuplicateID() {
         //given
         SignUpRequest request = signUpRequest();
