@@ -8,14 +8,17 @@ import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.auth.dto.LogInRequest;
 import com.moshimoshi.user.dto.SignUpRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
-@Getter
 public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
@@ -25,7 +28,7 @@ public class User extends BaseTimeEntity {
     private String password;
     private String nickname;
     private String email;
-    private String profile;
+    private String avatar;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -45,13 +48,14 @@ public class User extends BaseTimeEntity {
     private List<UserMessage> userMessages = new ArrayList<>();
 
     public static User createUser(SignUpRequest signUpRequest) {
-        User user = new User();
-        user.loginId = signUpRequest.getLoginId();
-        user.password = signUpRequest.getPassword();
-        user.nickname = signUpRequest.getNickname();
-        user.email = signUpRequest.getEmail();
-        user.profile = signUpRequest.getProfile();
-        user.role = Role.USER;
+        User user = User.builder()
+                .loginId(signUpRequest.getLoginId())
+                .password(signUpRequest.getPassword())
+                .nickname(signUpRequest.getNickname())
+                .email(signUpRequest.getEmail())
+                .avatar(signUpRequest.getAvatar())
+                .role(Role.USER)
+                .build();
         user.authentication = Authentication.of(user);
         return user;
     }

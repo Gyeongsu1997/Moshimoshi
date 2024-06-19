@@ -27,11 +27,11 @@ public class UserService {
     }
 
     @Transactional
-    public BaseResponse<?> signUp(SignUpRequest signUpRequest){
+    public String signUp(SignUpRequest signUpRequest){
         checkDuplicateLoginId(signUpRequest.getLoginId());
         User user = signUpRequest.toEntity();
         userRepository.save(user);
-        return BaseResponse.from("성공적으로 회원가입 되었습니다.");
+        return user.getLoginId();
     }
 
     public void checkDuplicateLoginId(String loginId) {
