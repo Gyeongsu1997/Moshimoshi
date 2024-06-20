@@ -18,6 +18,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -47,10 +48,9 @@ class ThreadControllerTest {
     void show() throws Exception {
         //given
         Long threadId = 1L;
-        Thread thread = Thread.builder()
-                .id(threadId)
-                .writer(new User())
-                .build();
+        Thread thread = new Thread();
+        ReflectionTestUtils.setField(thread, "id", threadId);
+        ReflectionTestUtils.setField(thread, "writer", new User());
 
         when(threadService.findOne(threadId))
                 .thenReturn(thread);

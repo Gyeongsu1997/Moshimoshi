@@ -28,7 +28,7 @@ public class ThreadService {
 
     @Transactional
     public void post(User user, ThreadPostRequest threadPostRequest) {
-        Thread thread = Thread.of(user, threadPostRequest);
+        Thread thread = Thread.createThread(user, threadPostRequest);
         threadRepository.save(thread);
     }
 

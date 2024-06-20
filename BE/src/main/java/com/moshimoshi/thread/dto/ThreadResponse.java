@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 public class ThreadResponse {
     private Long threadId;
     private String content;
-    private int thumbsUp;
     private boolean anonymous;
+    private int thumbsUp;
     private Long userId;
     private int numberOfComments;
     private LocalDateTime createdAt;
@@ -21,8 +21,8 @@ public class ThreadResponse {
         return ThreadResponse.builder()
                 .threadId(thread.getId())
                 .content(thread.getContent())
-                .thumbsUp(thread.getThumbsUp())
                 .anonymous(thread.isAnonymous())
+                .thumbsUp(thread.getThumbsUp())
                 .userId(thread.getWriter().getId())
                 .numberOfComments(thread.getNumberOfActiveComments())
                 .createdAt(thread.getCreatedAt())

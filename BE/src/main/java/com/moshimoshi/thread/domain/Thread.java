@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Thread extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +19,11 @@ public class Thread extends BaseTimeEntity {
     private Long id;
 
     private String content;
-    private int thumbsUp;
     private boolean anonymous;
-    private boolean deleted;
-    private int commentSequence;
-    private int numberOfActiveComments;
+    private boolean deleted = false;
+    private int thumbsUp = 0;
+    private int commentSequence = 0;
+    private int numberOfActiveComments = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -35,16 +32,11 @@ public class Thread extends BaseTimeEntity {
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Thread of(User writer, ThreadPostRequest threadPostRequest) {
-        Thread thread = Thread.builder()
-                .content(threadPostRequest.getContent())
-                .thumbsUp(0)
-                .anonymous(threadPostRequest.isAnonymous())
-                .deleted(false)
-                .commentSequence(0)
-                .numberOfActiveComments(0)
-                .writer(writer)
-                .build();
+    public static Thread createThread(User writer, ThreadPostRequest threadPostRequest) {
+        Thread thread = new Thread();
+        thread.content = threadPostRequest.getContent();
+        thread.anonymous = threadPostRequest.isAnonymous();
+        thread.writer = writer;
         writer.getThreads().add(thread);
         return thread;
     }

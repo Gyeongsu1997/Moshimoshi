@@ -1,17 +1,21 @@
 package com.moshimoshi.thread.repository;
 
+import com.moshimoshi.JpaAuditingConfig;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
-import com.moshimoshi.user.domain.Role;
 import com.moshimoshi.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Import(JpaAuditingConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ThreadRepositoryTest {
     @Autowired
     ThreadRepository threadRepository;
@@ -20,9 +24,9 @@ class ThreadRepositoryTest {
     @Test
     void save() {
         //given
-        User writer = user();
+        User writer = new User();
         ThreadPostRequest request = threadPostRequest();
-        Thread thread = thread(writer, request);
+        Thread thread = Thread.createThread(writer, request);
 
         //when
         Thread savedThread = threadRepository.save(thread);
@@ -30,27 +34,12 @@ class ThreadRepositoryTest {
         //then
         assertEquals(thread.getContent(), savedThread.getContent());
         assertEquals(thread.isAnonymous(), savedThread.isAnonymous());
-        assertEquals(0, savedThread.getThumbsUp());
         assertFalse(savedThread.isDeleted());
+        assertEquals(0, savedThread.getThumbsUp());
         assertEquals(0, savedThread.getCommentSequence());
         assertEquals(0, savedThread.getNumberOfActiveComments());
         assertEquals(writer, savedThread.getWriter());
         assertTrue(writer.getThreads().contains(savedThread));
-    }
-
-    private Thread thread(User writer, ThreadPostRequest request) {
-        return Thread.of(writer, request);
-    }
-
-    private User user() {
-        return User.builder()
-                .loginId("test")
-                .password("1234")
-                .nickname("test")
-                .email("test@test.com")
-                .avatar("test")
-                .role(Role.USER)
-                .build();
     }
 
     private ThreadPostRequest threadPostRequest() {

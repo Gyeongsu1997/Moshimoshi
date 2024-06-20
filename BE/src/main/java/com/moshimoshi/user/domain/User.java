@@ -13,10 +13,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User extends BaseTimeEntity {
@@ -48,14 +45,13 @@ public class User extends BaseTimeEntity {
     private List<UserMessage> userMessages = new ArrayList<>();
 
     public static User createUser(SignUpRequest signUpRequest) {
-        User user = User.builder()
-                .loginId(signUpRequest.getLoginId())
-                .password(signUpRequest.getPassword())
-                .nickname(signUpRequest.getNickname())
-                .email(signUpRequest.getEmail())
-                .avatar(signUpRequest.getAvatar())
-                .role(Role.USER)
-                .build();
+        User user = new User();
+        user.loginId = signUpRequest.getLoginId();
+        user.password = signUpRequest.getPassword();
+        user.nickname = signUpRequest.getNickname();
+        user.email = signUpRequest.getEmail();
+        user.avatar = signUpRequest.getAvatar();
+        user.role = Role.USER;
         user.authentication = Authentication.of(user);
         return user;
     }
