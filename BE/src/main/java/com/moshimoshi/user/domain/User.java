@@ -1,6 +1,7 @@
 package com.moshimoshi.user.domain;
 
 import com.moshimoshi.auth.domain.Authentication;
+import com.moshimoshi.bookmark.domain.Bookmark;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.message.domain.UserMessage;
@@ -36,10 +37,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "writer")
     private List<Thread> threads = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
     @OneToMany(mappedBy = "writer")
     private List<Comment> comments = new ArrayList<>();
-
-    //todo 북마크한 스레드 리스트
 
     @OneToMany(mappedBy = "user")
     private List<UserMessage> userMessages = new ArrayList<>();

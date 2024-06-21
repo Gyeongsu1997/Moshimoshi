@@ -1,5 +1,6 @@
 package com.moshimoshi.thread.domain;
 
+import com.moshimoshi.bookmark.domain.Bookmark;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.comment.dto.CommentRequest;
 import com.moshimoshi.common.domain.BaseEntity;
