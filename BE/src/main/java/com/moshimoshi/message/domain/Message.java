@@ -1,6 +1,6 @@
 package com.moshimoshi.message.domain;
 
-import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Entity
 @Getter
-public class Message extends BaseTimeEntity {
+public class Message extends BaseEntity {
     private static final AtomicLong roomSequence = new AtomicLong();
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

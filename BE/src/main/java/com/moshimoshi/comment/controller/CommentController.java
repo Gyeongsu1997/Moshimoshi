@@ -21,7 +21,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/comments")
-    public List<CommentResponse> list(@PathVariable Long threadId) {
+    public List<CommentResponse> getCommentList(@PathVariable Long threadId) {
         return commentService.list(threadId)
                 .stream()
                 .map(CommentResponse::from)
@@ -29,7 +29,7 @@ public class CommentController {
     }
 
     /**
-     * Handlers which are below here require user to be logged in
+     * Handlers below here require user to be logged in
      */
 
     @PostMapping("/comments")
@@ -41,7 +41,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<?> delete(@Login User user, @PathVariable Long threadId, @PathVariable Long commentId) throws URISyntaxException {
+    public ResponseEntity<?> deleteComment(@Login User user, @PathVariable Long threadId, @PathVariable Long commentId) throws URISyntaxException {
         commentService.deleteOne(user, commentId);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads/" + threadId + "/comments"))

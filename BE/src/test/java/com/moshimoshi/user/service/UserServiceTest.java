@@ -25,7 +25,7 @@ class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
-    @DisplayName("회원가입: 성공")
+    @DisplayName("회원가입 성공")
     @Test
     void signUpSuccess() {
         //given
@@ -45,7 +45,7 @@ class UserServiceTest {
         verify(userRepository).save(any(User.class));
     }
 
-    @DisplayName("회원가입: 중복 아이디")
+    @DisplayName("회원가입 실패: 중복 아이디")
     @Test
     void signUpDuplicateID() {
         //given

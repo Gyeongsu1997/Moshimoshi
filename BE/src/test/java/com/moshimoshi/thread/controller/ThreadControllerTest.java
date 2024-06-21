@@ -2,10 +2,8 @@ package com.moshimoshi.thread.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moshimoshi.FilterConfig;
-import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
-import com.moshimoshi.thread.dto.ThreadResponse;
 import com.moshimoshi.thread.service.ThreadService;
 import com.moshimoshi.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
@@ -15,16 +13,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,14 +41,14 @@ class ThreadControllerTest {
 
     @DisplayName("스레드 조회")
     @Test
-    void show() throws Exception {
+    void getThread() throws Exception {
         //given
         Long threadId = 1L;
         Thread thread = new Thread();
-        ReflectionTestUtils.setField(thread, "id", threadId);
-        ReflectionTestUtils.setField(thread, "writer", new User());
+        setField(thread, "id", threadId);
+        setField(thread, "writer", new User());
 
-        when(threadService.findOne(threadId))
+        when(threadService.findThread(threadId))
                 .thenReturn(thread);
 
         //when
@@ -65,21 +61,24 @@ class ThreadControllerTest {
                 .andExpect(jsonPath("data.threadId").value(threadId));
     }
 
-    @DisplayName("스레드 작성")
+    @DisplayName("스레드 작성 성공")
     @Test
-    void post() throws Exception {
+    void postThread() throws Exception {
         //given
         ThreadPostRequest request = threadPostRequest();
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/threads")
+                post("/api/threads")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
         );
 
         //then
         resultActions.andExpect(status().isOk());
+
+        //verify
+        verify(threadService).createThread(any(User.class), any(ThreadPostRequest.class));
     }
 
     private ThreadPostRequest threadPostRequest() {

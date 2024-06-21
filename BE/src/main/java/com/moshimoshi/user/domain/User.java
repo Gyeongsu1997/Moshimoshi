@@ -2,7 +2,7 @@ package com.moshimoshi.user.domain;
 
 import com.moshimoshi.auth.domain.Authentication;
 import com.moshimoshi.comment.domain.Comment;
-import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.message.domain.UserMessage;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.auth.dto.LogInRequest;
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
     private Long id;

@@ -23,29 +23,29 @@ public class ThreadController {
     private final ThreadService threadService;
 
     @GetMapping
-    public BaseResponse<ThreadListResponse> list(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
+    public BaseResponse<ThreadListResponse> getThreadList(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
         return BaseResponse.of(ThreadListResponse.of(threadService.list(pageNumber)));
     }
 
     @GetMapping("/{threadId}")
-    public BaseResponse<ThreadResponse> show(@PathVariable Long threadId) {
-        Thread thread = threadService.findOne(threadId);
+    public BaseResponse<ThreadResponse> getThread(@PathVariable Long threadId) {
+        Thread thread = threadService.findThread(threadId);
         return BaseResponse.of(ThreadResponse.from(thread));
     }
 
     /**
-     * Handlers which are below here require user to be logged in
+     * Handlers below here require user to be logged in
      */
 
     @PostMapping
-    public BaseResponse<?> post(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) throws URISyntaxException {
-        threadService.post(user, threadPostRequest);
+    public BaseResponse<?> postThread(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) {
+        threadService.createThread(user, threadPostRequest);
         return BaseResponse.success();
     }
 
     @DeleteMapping("/{threadId}")
-    public ResponseEntity<?> delete(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
-        threadService.deleteOne(user, threadId);
+    public ResponseEntity<?> deleteThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+        threadService.deleteThread(user, threadId);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads"))
                 .build();

@@ -1,12 +1,12 @@
 package com.moshimoshi.report.domain;
 
-import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class Report extends BaseTimeEntity {
+public class Report extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")

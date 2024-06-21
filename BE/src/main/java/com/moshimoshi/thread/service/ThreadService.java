@@ -27,12 +27,12 @@ public class ThreadService {
     }
 
     @Transactional
-    public void post(User user, ThreadPostRequest threadPostRequest) {
+    public void createThread(User user, ThreadPostRequest threadPostRequest) {
         Thread thread = Thread.createThread(user, threadPostRequest);
         threadRepository.save(thread);
     }
 
-    public Thread findOne(Long threadId) {
+    public Thread findThread(Long threadId) {
         Thread thread = threadRepository.findById(threadId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         if (thread.isDeleted()) {
@@ -42,8 +42,8 @@ public class ThreadService {
     }
 
     @Transactional
-    public void deleteOne(User user, Long threadId) {
-        Thread thread = findOne(threadId);
+    public void deleteThread(User user, Long threadId) {
+        Thread thread = findThread(threadId);
         if (!thread.isWriter(user)) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
@@ -52,7 +52,7 @@ public class ThreadService {
 
     @Transactional
     public void thumbsUp(Long threadId) {
-        Thread thread = findOne(threadId);
+        Thread thread = findThread(threadId);
         thread.thumbsUp();
     }
 }

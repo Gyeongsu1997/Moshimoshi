@@ -2,7 +2,7 @@ package com.moshimoshi.thread.domain;
 
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.comment.dto.CommentRequest;
-import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Thread extends BaseTimeEntity {
+public class Thread extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "thread_id")
     private Long id;
@@ -42,7 +42,8 @@ public class Thread extends BaseTimeEntity {
     }
 
     public void deleteThread() {
-        deleted = true;
+        this.deleted = true;
+        delete("user");
     }
 
     public boolean isWriter(User user) {
@@ -54,14 +55,14 @@ public class Thread extends BaseTimeEntity {
     }
 
     public synchronized Comment addComment(User user, CommentRequest commentRequest) {
-        this.commentSequence++; //동시성 이슈 발생 가능
-        Comment comment = Comment.of(user, commentRequest, this);
+        this.commentSequence++; //concurrency issue
+        Comment comment = Comment.createComment(user, commentRequest, this);
         this.comments.add(comment);
         numberOfActiveComments++;
         return comment;
     }
 
     public synchronized int thumbsUp() {
-        return ++this.thumbsUp; //동시성 이슈 발생 가능
+        return ++this.thumbsUp; //concurrency issue
     }
 }
