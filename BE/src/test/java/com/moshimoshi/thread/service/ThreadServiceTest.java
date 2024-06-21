@@ -4,6 +4,7 @@ import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.repository.ThreadRepository;
+import com.moshimoshi.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,13 +34,13 @@ class ThreadServiceTest {
 
     @DisplayName("스레드 조회 성공")
     @Test
-    void findThread() {
+    void findThreadSuccess() {
         //given
         Long threadId = 1L;
         Thread thread = new Thread();
         setField(thread, "id", threadId);
 
-        when(threadRepository.findByIdAndDeleted(threadId, false))
+        when(threadRepository.findByIdAndDeletedFalse(threadId))
                 .thenReturn(Optional.of(thread));
 
         //when
@@ -55,7 +56,7 @@ class ThreadServiceTest {
         //given
         Long threadId = 1L;
 
-        when(threadRepository.findByIdAndDeleted(threadId, false))
+        when(threadRepository.findByIdAndDeletedFalse(threadId))
                 .thenReturn(Optional.empty());
 
         //when
@@ -65,5 +66,32 @@ class ThreadServiceTest {
         assertEquals(ErrorCode.NOT_FOUND.getHttpStatus(), exception.getHttpStatus());
         assertEquals(ErrorCode.NOT_FOUND.getCode(), exception.getCode());
         assertEquals(ErrorCode.NOT_FOUND.getMessage(), exception.getMessage());
+    }
+
+    @DisplayName("스레드 삭제 성공")
+    @Test
+    void deleteThreadSuccess() {
+        //given
+        Long userId = 1L;
+        String nickname = "test";
+        User user = new User();
+        setField(user, "nickname", nickname);
+        setField(user, "id", userId);
+
+        Long threadId = 1L;
+        Thread thread = new Thread();
+        setField(thread, "id", threadId);
+        setField(thread, "writer", user);
+
+        when(threadRepository.findByIdAndDeletedFalse(threadId))
+                .thenReturn(Optional.of(thread));
+
+        //when
+        threadService.deleteThread(user, threadId);
+
+        //then
+        assertTrue(thread.isDeleted());
+        assertEquals(nickname, thread.getDeletedBy());
+        assertNotNull(thread.getDeletedAt());
     }
 }

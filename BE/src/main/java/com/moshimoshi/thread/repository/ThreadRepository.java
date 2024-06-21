@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface ThreadRepository extends JpaRepository<Thread, Long> {
     Page<Thread> findByDeleted(boolean deleted, Pageable pageable);
-
-    Optional<Thread> findByIdAndDeleted(Long id, boolean deleted);
+    Optional<Thread> findByIdAndDeletedFalse(Long threadId);
 }

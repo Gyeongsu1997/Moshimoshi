@@ -24,7 +24,7 @@ public class ThreadController {
 
     @GetMapping
     public BaseResponse<ThreadListResponse> getThreadList(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
-        return BaseResponse.of(ThreadListResponse.of(threadService.list(pageNumber)));
+        return BaseResponse.of(ThreadListResponse.of(threadService.findThreadList(pageNumber)));
     }
 
     @GetMapping("/{threadId}")
@@ -51,8 +51,8 @@ public class ThreadController {
                 .build();
     }
 
-    @PostMapping("/{threadId}/thumbsup")
-    public ResponseEntity<?> thumbsUp(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+    @PostMapping("/{threadId}/like")
+    public ResponseEntity<?> likeThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
         threadService.likeThread(threadId);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads/" + threadId))

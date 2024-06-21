@@ -42,9 +42,9 @@ public class Thread extends BaseEntity {
         return thread;
     }
 
-    public void deleteThread() {
+    public void deleteThread(User user) {
         this.deleted = true;
-        delete("user");
+        delete(user.getNickname());
     }
 
     public boolean isWriter(User user) {
