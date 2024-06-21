@@ -22,7 +22,7 @@ public class Thread extends BaseEntity {
     private String content;
     private boolean anonymous;
     private boolean deleted = false;
-    private int thumbsUp = 0;
+    private int likeCount = 0;
     private int commentSequence = 0;
     private int numberOfActiveComments = 0;
 
@@ -63,7 +63,7 @@ public class Thread extends BaseEntity {
         return comment;
     }
 
-    public synchronized int thumbsUp() {
-        return ++this.thumbsUp; //concurrency issue
+    public synchronized int like() {
+        return ++this.likeCount; //concurrency issue
     }
 }

@@ -39,7 +39,7 @@ class ThreadServiceTest {
         Thread thread = new Thread();
         setField(thread, "id", threadId);
 
-        when(threadRepository.findById(threadId))
+        when(threadRepository.findByIdAndDeleted(threadId, false))
                 .thenReturn(Optional.of(thread));
 
         //when
@@ -55,7 +55,7 @@ class ThreadServiceTest {
         //given
         Long threadId = 1L;
 
-        when(threadRepository.findById(threadId))
+        when(threadRepository.findByIdAndDeleted(threadId, false))
                 .thenReturn(Optional.empty());
 
         //when

@@ -33,12 +33,8 @@ public class ThreadService {
     }
 
     public Thread findThread(Long threadId) {
-        Thread thread = threadRepository.findById(threadId)
+        return threadRepository.findByIdAndDeleted(threadId, false)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
-        if (thread.isDeleted()) {
-            throw new BusinessException(ErrorCode.NOT_FOUND);
-        }
-        return thread;
     }
 
     @Transactional
@@ -51,8 +47,8 @@ public class ThreadService {
     }
 
     @Transactional
-    public void thumbsUp(Long threadId) {
+    public void likeThread(Long threadId) {
         Thread thread = findThread(threadId);
-        thread.thumbsUp();
+        thread.like();
     }
 }

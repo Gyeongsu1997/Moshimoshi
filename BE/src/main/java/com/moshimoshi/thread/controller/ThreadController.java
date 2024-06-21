@@ -53,7 +53,7 @@ public class ThreadController {
 
     @PostMapping("/{threadId}/thumbsup")
     public ResponseEntity<?> thumbsUp(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
-        threadService.thumbsUp(threadId);
+        threadService.likeThread(threadId);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads/" + threadId))
                 .build();

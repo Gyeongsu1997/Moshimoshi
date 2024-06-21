@@ -12,7 +12,7 @@ public class ThreadResponse {
     private Long threadId;
     private String content;
     private boolean anonymous;
-    private int thumbsUp;
+    private int likeCount;
     private Long userId;
     private int numberOfComments;
     private LocalDateTime createdAt;
@@ -22,7 +22,7 @@ public class ThreadResponse {
                 .threadId(thread.getId())
                 .content(thread.getContent())
                 .anonymous(thread.isAnonymous())
-                .thumbsUp(thread.getThumbsUp())
+                .likeCount(thread.getLikeCount())
                 .userId(thread.getWriter().getId())
                 .numberOfComments(thread.getNumberOfActiveComments())
                 .createdAt(thread.getCreatedAt())

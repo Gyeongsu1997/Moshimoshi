@@ -35,7 +35,7 @@ class ThreadRepositoryTest {
         assertEquals(thread.getContent(), savedThread.getContent());
         assertEquals(thread.isAnonymous(), savedThread.isAnonymous());
         assertFalse(savedThread.isDeleted());
-        assertEquals(0, savedThread.getThumbsUp());
+        assertEquals(0, savedThread.getLikeCount());
         assertEquals(0, savedThread.getCommentSequence());
         assertEquals(0, savedThread.getNumberOfActiveComments());
         assertEquals(writer, savedThread.getWriter());
