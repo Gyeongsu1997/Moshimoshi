@@ -2,8 +2,6 @@ package com.moshimoshi.thread.repository;
 
 import com.moshimoshi.JpaAuditingConfig;
 import com.moshimoshi.thread.domain.Thread;
-import com.moshimoshi.thread.dto.ThreadPostRequest;
-import com.moshimoshi.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
@@ -20,32 +22,35 @@ class ThreadRepositoryTest {
     @Autowired
     ThreadRepository threadRepository;
 
-    @DisplayName("스레드 저장")
+    @DisplayName("삭제된 스레드는 조회할 수 없다")
     @Test
-    void save() {
+    void findByIdAndDeletedFalse() {
         //given
-        User writer = new User();
-        ThreadPostRequest request = threadPostRequest();
-        Thread thread = Thread.createThread(writer, request);
+        Thread thread = new Thread();
+        setField(thread, "deleted", true);
+        Long threadId = threadRepository.saveAndFlush(thread).getId();
 
         //when
-        Thread savedThread = threadRepository.save(thread);
+        Optional<Thread> optional = threadRepository.findByIdAndDeletedFalse(threadId);
 
         //then
-        assertEquals(thread.getContent(), savedThread.getContent());
-        assertEquals(thread.isAnonymous(), savedThread.isAnonymous());
-        assertFalse(savedThread.isDeleted());
-        assertEquals(0, savedThread.getLikeCount());
-        assertEquals(0, savedThread.getCommentSequence());
-        assertEquals(0, savedThread.getNumberOfActiveComments());
-        assertEquals(writer, savedThread.getWriter());
-        assertTrue(writer.getThreads().contains(savedThread));
+        assertTrue(optional.isEmpty());
     }
 
-    private ThreadPostRequest threadPostRequest() {
-        return ThreadPostRequest.builder()
-                .content("안녕하세요")
-                .anonymous(true)
-                .build();
+    @DisplayName("스레드를 삭제하면 deleted, deletedAt, deletedBy 컬럼이 업데이트된다.")
+    @Test
+    void updateDeletedById() {
+        //given
+        Long id = threadRepository.saveAndFlush(new Thread()).getId();
+        String deletedBy = "user";
+
+        //when
+        threadRepository.updateDeletedById(id, LocalDateTime.now(), deletedBy);
+
+        //then
+        Thread thread = threadRepository.findById(id).orElseThrow();
+        assertTrue(thread.isDeleted());
+        assertNotNull(thread.getDeletedAt());
+        assertEquals(deletedBy, thread.getDeletedBy());
     }
 }

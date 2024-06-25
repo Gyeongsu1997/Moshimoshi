@@ -27,12 +27,4 @@ public abstract class BaseEntity {
 
 //    @LastModifiedBy
 //    private String modifiedBy;
-
-    private LocalDateTime deletedAt;
-    private String deletedBy;
-
-    protected void delete(String deletedBy) { //concurrency issue
-        this.deletedAt = LocalDateTime.now();
-        this.deletedBy = deletedBy;
-    }
 }

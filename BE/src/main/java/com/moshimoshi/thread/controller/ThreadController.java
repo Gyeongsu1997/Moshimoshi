@@ -23,8 +23,8 @@ public class ThreadController {
     private final ThreadService threadService;
 
     @GetMapping
-    public BaseResponse<ThreadListResponse> getThreadList(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
-        return BaseResponse.of(ThreadListResponse.of(threadService.findThreadList(pageNumber)));
+    public BaseResponse<ThreadListResponse> getThreads(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
+        return BaseResponse.of(ThreadListResponse.of(threadService.findThreads(pageNumber)));
     }
 
     @GetMapping("/{threadId}")
@@ -44,11 +44,9 @@ public class ThreadController {
     }
 
     @DeleteMapping("/{threadId}")
-    public ResponseEntity<?> deleteThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+    public BaseResponse<?> deleteThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
         threadService.deleteThread(user, threadId);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
-                .location(new URI("/api/threads"))
-                .build();
+        return BaseResponse.success();
     }
 
     @PostMapping("/{threadId}/like")

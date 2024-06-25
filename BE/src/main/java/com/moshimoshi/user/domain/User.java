@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "authentication_id")
     private Authentication authentication;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "user")
     private List<Thread> threads = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -22,9 +24,9 @@ public class ThreadService {
     private static final int PAGE_SIZE = 10;
     private final ThreadRepository threadRepository;
 
-    public Page<Thread> findThreadList(int pageNumber) {
+    public Page<Thread> findThreads(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("id").descending());
-        return threadRepository.findByDeleted(false, pageable);
+        return threadRepository.findThreadsByDeletedFalse(pageable);
     }
 
     @Transactional
@@ -40,11 +42,15 @@ public class ThreadService {
 
     @Transactional
     public void deleteThread(User user, Long threadId) {
-        Thread thread = findThread(threadId);
-        if (!thread.isWriter(user) && user.getRole() != Role.ADMIN) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
+        //요청을 보낸 사용자가 스레드의 작성자인지 검증
+        threadRepository.findByIdAndUserAndDeletedFalse(threadId, user)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+        //스레드 삭제(soft delete)
+        int affectedRows = threadRepository.updateDeletedById(threadId, LocalDateTime.now(), user.getLoginId());
+        //이미 삭제되었으면 예외 발생
+        if (affectedRows == 0) {
+            throw new BusinessException(ErrorCode.ALREADY_DELETED);
         }
-        thread.deleteThread(user);
     }
 
     @Transactional

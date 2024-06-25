@@ -1,6 +1,5 @@
 package com.moshimoshi.thread.domain;
 
-import com.moshimoshi.bookmark.domain.Bookmark;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.comment.dto.CommentRequest;
 import com.moshimoshi.common.domain.BaseEntity;
@@ -9,6 +8,7 @@ import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,34 +21,27 @@ public class Thread extends BaseEntity {
 
     private String content;
     private boolean anonymous;
-    private boolean deleted = false;
     private int likeCount = 0;
     private int commentSequence = 0;
-    private int numberOfActiveComments = 0;
+    private int numberOfActiveComments = 0; //삭제되지 않은 댓글의 수
+    private boolean deleted = false;
+    private LocalDateTime deletedAt;
+    private String deletedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private User writer;
+    private User user;
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Thread createThread(User writer, ThreadPostRequest threadPostRequest) {
+    public static Thread createThread(User user, ThreadPostRequest threadPostRequest) {
         Thread thread = new Thread();
         thread.content = threadPostRequest.getContent();
         thread.anonymous = threadPostRequest.isAnonymous();
-        thread.writer = writer;
-        writer.getThreads().add(thread);
+        thread.user = user;
+        user.getThreads().add(thread);
         return thread;
-    }
-
-    public void deleteThread(User user) {
-        this.deleted = true;
-        delete(user.getNickname());
-    }
-
-    public boolean isWriter(User user) {
-        return user != null && user.getId().equals(this.writer.getId());
     }
 
     public List<Comment> getActiveComments() {

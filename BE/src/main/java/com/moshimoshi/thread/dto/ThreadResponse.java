@@ -23,7 +23,7 @@ public class ThreadResponse {
                 .content(thread.getContent())
                 .anonymous(thread.isAnonymous())
                 .likeCount(thread.getLikeCount())
-                .userId(thread.getWriter().getId())
+                .userId(thread.getUser().getId())
                 .numberOfComments(thread.getNumberOfActiveComments())
                 .createdAt(thread.getCreatedAt())
                 .build();

@@ -4,7 +4,7 @@ import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.User;
 import com.moshimoshi.user.dto.SignUpRequest;
-import com.moshimoshi.user.repository.UserRepository;
+import com.moshimoshi.user.repository.JpaUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ class UserServiceTest {
     UserService userService;
 
     @Mock
-    UserRepository userRepository;
+    JpaUserRepository userRepository;
 
     @DisplayName("회원가입 성공")
     @Test

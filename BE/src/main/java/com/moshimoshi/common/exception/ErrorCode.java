@@ -27,7 +27,9 @@ public enum ErrorCode {
      */
     DUPLICATE_ID(HttpStatus.BAD_REQUEST, 300, "ID Already Exist"),
     USER_NOT_EXIST(HttpStatus.BAD_REQUEST, 310, "User Not Exist"),
-    INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, 320, "Incorrect Password");
+    INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, 320, "Incorrect Password"),
+
+    ALREADY_DELETED(HttpStatus.BAD_REQUEST, 400, "Already Deleted");
 
     private final HttpStatus httpStatus;
     private final int code;

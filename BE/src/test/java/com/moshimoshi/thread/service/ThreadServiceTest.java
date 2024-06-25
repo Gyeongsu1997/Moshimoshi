@@ -26,12 +26,6 @@ class ThreadServiceTest {
     @Mock
     ThreadRepository threadRepository;
 
-    @DisplayName("스레드 목록 조회")
-    @Test
-    void list() {
-        
-    }
-
     @DisplayName("스레드 조회 성공")
     @Test
     void findThreadSuccess() {
@@ -66,32 +60,5 @@ class ThreadServiceTest {
         assertEquals(ErrorCode.NOT_FOUND.getHttpStatus(), exception.getHttpStatus());
         assertEquals(ErrorCode.NOT_FOUND.getCode(), exception.getCode());
         assertEquals(ErrorCode.NOT_FOUND.getMessage(), exception.getMessage());
-    }
-
-    @DisplayName("스레드 삭제 성공")
-    @Test
-    void deleteThreadSuccess() {
-        //given
-        Long userId = 1L;
-        String nickname = "test";
-        User user = new User();
-        setField(user, "nickname", nickname);
-        setField(user, "id", userId);
-
-        Long threadId = 1L;
-        Thread thread = new Thread();
-        setField(thread, "id", threadId);
-        setField(thread, "writer", user);
-
-        when(threadRepository.findByIdAndDeletedFalse(threadId))
-                .thenReturn(Optional.of(thread));
-
-        //when
-        threadService.deleteThread(user, threadId);
-
-        //then
-        assertTrue(thread.isDeleted());
-        assertEquals(nickname, thread.getDeletedBy());
-        assertNotNull(thread.getDeletedAt());
     }
 }

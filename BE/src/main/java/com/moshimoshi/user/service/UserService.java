@@ -1,6 +1,5 @@
 package com.moshimoshi.user.service;
 
-import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.auth.domain.AuthenticatedUser;
@@ -8,7 +7,7 @@ import com.moshimoshi.user.domain.User;
 import com.moshimoshi.auth.dto.LogInRequest;
 import com.moshimoshi.auth.dto.LogInResponse;
 import com.moshimoshi.user.dto.SignUpRequest;
-import com.moshimoshi.user.repository.UserRepository;
+import com.moshimoshi.user.repository.JpaUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     public User findByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)

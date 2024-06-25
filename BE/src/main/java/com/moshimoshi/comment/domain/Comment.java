@@ -56,7 +56,7 @@ public class Comment extends BaseEntity {
 
     public void deleteComment() {
         this.deleted = true;
-        delete("user");
+//        delete("user");
         // thread의 numberOfActiveComment--;
     }
 

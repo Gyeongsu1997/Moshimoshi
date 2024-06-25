@@ -46,7 +46,7 @@ class ThreadControllerTest {
         Long threadId = 1L;
         Thread thread = new Thread();
         setField(thread, "id", threadId);
-        setField(thread, "writer", new User());
+        setField(thread, "user", new User());
 
         when(threadService.findThread(threadId))
                 .thenReturn(thread);
