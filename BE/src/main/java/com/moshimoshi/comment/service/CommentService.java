@@ -3,7 +3,7 @@ package com.moshimoshi.comment.service;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.comment.dto.CommentRequest;
 import com.moshimoshi.comment.repository.CommentRepository;
-import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.repository.ThreadRepository;
@@ -23,18 +23,18 @@ public class CommentService {
 
     public Comment findOne(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommonException(ErrorCode.COMMENT_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         if (comment.isDeleted()) {
-            throw new CommonException(ErrorCode.COMMENT_NOT_EXIST);
+            throw new BusinessException(ErrorCode.NOT_FOUND);
         }
         return comment;
     }
 
     public Thread findThread(Long threadId) {
         Thread thread = threadRepository.findById(threadId)
-                .orElseThrow(() -> new CommonException(ErrorCode.THREAD_NOT_EXIST));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         if (thread.isDeleted()) {
-            throw new CommonException(ErrorCode.THREAD_NOT_EXIST);
+            throw new BusinessException(ErrorCode.NOT_FOUND);
         }
         return thread;
     }
@@ -55,7 +55,7 @@ public class CommentService {
     public void deleteOne(User user, Long commentId) {
         Comment comment = findOne(commentId);
         if (!comment.isWriter(user)) {
-            throw new CommonException(ErrorCode.FORBIDDEN);
+            throw new BusinessException(ErrorCode.FORBIDDEN);
         }
         comment.deleteComment();
     }

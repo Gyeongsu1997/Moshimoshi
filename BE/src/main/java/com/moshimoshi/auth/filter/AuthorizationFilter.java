@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moshimoshi.auth.domain.AuthenticatedUser;
 import com.moshimoshi.auth.utils.JwtProvider;
 import com.moshimoshi.common.Define;
-import com.moshimoshi.common.exception.CommonException;
+import com.moshimoshi.common.exception.BusinessException;
 import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.user.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class AuthorizationFilter implements Filter {
             return;
         }
         if (!isTokenExist(httpServletRequest)) {
-            throw new CommonException(ErrorCode.ACCESS_TOKEN_NOT_EXIST);
+            throw new BusinessException(ErrorCode.TOKEN_NOT_EXIST);
         }
         try {
             String token = getToken(httpServletRequest);
@@ -42,7 +43,9 @@ public class AuthorizationFilter implements Filter {
             log.info("[{}] logged in", authenticatedUser.getLoginId());
             chain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            throw new CommonException(ErrorCode.ACCESS_TOKEN_EXPIRED);
+            throw new BusinessException(ErrorCode.TOKEN_EXPIRED);
+        } catch (JwtException e) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
     }
 
@@ -68,7 +71,7 @@ public class AuthorizationFilter implements Filter {
 
     private void authorize(String requestURI, AuthenticatedUser authenticatedUser) {
         if (PatternMatchUtils.simpleMatch("*/admin*", requestURI) && !Role.ADMIN.equals(authenticatedUser.getRole())){
-            throw new CommonException(ErrorCode.FORBIDDEN);
+            throw new BusinessException(ErrorCode.FORBIDDEN);
         }
     }
 }

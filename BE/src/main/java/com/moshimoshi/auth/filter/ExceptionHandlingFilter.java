@@ -1,10 +1,8 @@
 package com.moshimoshi.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moshimoshi.common.exception.CommonException;
-import com.moshimoshi.common.exception.ErrorCode;
-import com.moshimoshi.common.exception.ErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.moshimoshi.common.exception.BusinessException;
+import com.moshimoshi.common.dto.ErrorResponse;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ public class ExceptionHandlingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(request, response);
-        } catch (CommonException e) {
+        } catch (BusinessException e) {
             setErrorResponse((HttpServletResponse) response, e);
         } catch (Exception e) {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -29,7 +27,7 @@ public class ExceptionHandlingFilter implements Filter {
         }
     }
 
-    private void setErrorResponse(HttpServletResponse httpServletResponse, CommonException e) throws IOException {
+    private void setErrorResponse(HttpServletResponse httpServletResponse, BusinessException e) throws IOException {
         httpServletResponse.setStatus(e.getHttpStatus().value());
         httpServletResponse.setContentType("application/json");
         httpServletResponse.setCharacterEncoding("utf-8");

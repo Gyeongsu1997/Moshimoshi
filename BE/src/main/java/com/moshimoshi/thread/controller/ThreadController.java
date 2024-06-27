@@ -1,6 +1,7 @@
 package com.moshimoshi.thread.controller;
 
 import com.moshimoshi.auth.resolver.Login;
+import com.moshimoshi.common.dto.BaseResponse;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.thread.dto.ThreadListResponse;
@@ -22,39 +23,35 @@ public class ThreadController {
     private final ThreadService threadService;
 
     @GetMapping
-    public ThreadListResponse list(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
-        return ThreadListResponse.of(threadService.list(pageNumber));
+    public BaseResponse<ThreadListResponse> getThreads(@RequestParam(name = "page", defaultValue = "0") int pageNumber) {
+        return BaseResponse.of(ThreadListResponse.of(threadService.findThreads(pageNumber)));
     }
 
     @GetMapping("/{threadId}")
-    public ThreadResponse show(@PathVariable Long threadId) {
-        Thread thread = threadService.findOne(threadId);
-        return ThreadResponse.from(thread);
+    public BaseResponse<ThreadResponse> getThread(@PathVariable Long threadId) {
+        Thread thread = threadService.findThread(threadId);
+        return BaseResponse.of(ThreadResponse.from(thread));
     }
 
     /**
-     * Handlers which are below here require user to be logged in
+     * Handlers below here require user to be logged in
      */
 
     @PostMapping
-    public ResponseEntity<?> post(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) throws URISyntaxException {
-        threadService.post(user, threadPostRequest);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
-                .location(new URI("/api/threads"))
-                .build();
+    public BaseResponse<?> postThread(@Login User user, @RequestBody ThreadPostRequest threadPostRequest) {
+        threadService.createThread(user, threadPostRequest);
+        return BaseResponse.success();
     }
 
     @DeleteMapping("/{threadId}")
-    public ResponseEntity<?> delete(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
-        threadService.deleteOne(user, threadId);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
-                .location(new URI("/api/threads"))
-                .build();
+    public BaseResponse<?> deleteThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+        threadService.deleteThread(user, threadId);
+        return BaseResponse.success();
     }
 
-    @PostMapping("/{threadId}/thumbsup")
-    public ResponseEntity<?> thumbsUp(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
-        threadService.thumbsUp(threadId);
+    @PostMapping("/{threadId}/like")
+    public ResponseEntity<?> likeThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+        threadService.likeThread(threadId);
         return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
                 .location(new URI("/api/threads/" + threadId))
                 .build();

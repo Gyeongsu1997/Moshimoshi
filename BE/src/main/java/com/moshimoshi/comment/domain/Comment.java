@@ -1,7 +1,7 @@
 package com.moshimoshi.comment.domain;
 
 import com.moshimoshi.comment.dto.CommentRequest;
-import com.moshimoshi.common.domain.BaseTimeEntity;
+import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.user.domain.User;
 import jakarta.persistence.*;
@@ -14,19 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-public class Comment extends BaseTimeEntity {
+public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 
     private String content;
-    private int commentOrder;
     private boolean anonymous;
-    private boolean deleted;
+    private int commentOrder;
+    private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -46,21 +43,20 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
-    public static Comment of(User writer, CommentRequest commentRequest, Thread thread) {
-        Comment comment = Comment.builder()
-                .content(commentRequest.getContent())
-                .commentOrder(thread.getCommentSequence())
-                .anonymous(commentRequest.isAnonymous())
-                .deleted(false)
-                .writer(writer)
-                .thread(thread)
-                .build();
+    public static Comment createComment(User writer, CommentRequest commentRequest, Thread thread) {
+        Comment comment = new Comment();
+        comment.content = commentRequest.getContent();
+        comment.anonymous = commentRequest.isAnonymous();;
+        comment.commentOrder = thread.getCommentSequence();
+        comment.writer = writer;
+        comment.thread = thread;
         writer.getComments().add(comment);
         return comment;
     }
 
     public void deleteComment() {
-        deleted = true;
+        this.deleted = true;
+//        delete("user");
         // thread의 numberOfActiveComment--;
     }
 

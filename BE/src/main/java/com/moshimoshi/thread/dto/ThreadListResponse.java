@@ -15,7 +15,7 @@ public class ThreadListResponse {
     private Integer pageSize;
     private Integer numberOfElements;
     private boolean hasNext;
-    private List<ThreadResponse> list;
+    private List<ThreadResponse> threads;
 
     public static ThreadListResponse of(Page<Thread> threadPage) {
         return ThreadListResponse.builder()
@@ -24,7 +24,7 @@ public class ThreadListResponse {
                 .pageSize(threadPage.getSize())
                 .numberOfElements(threadPage.getNumberOfElements())
                 .hasNext(threadPage.hasNext())
-                .list(threadPage.map(ThreadResponse::from).getContent())
+                .threads(threadPage.map(ThreadResponse::from).getContent())
                 .build();
     }
 }
