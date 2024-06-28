@@ -1,4 +1,4 @@
-package com.moshimoshi.bookmark.domain;
+package com.moshimoshi.thread.domain;
 
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.user.domain.User;

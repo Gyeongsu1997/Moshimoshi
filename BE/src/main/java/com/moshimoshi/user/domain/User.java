@@ -1,7 +1,7 @@
 package com.moshimoshi.user.domain;
 
 import com.moshimoshi.auth.domain.Authentication;
-import com.moshimoshi.bookmark.domain.Bookmark;
+import com.moshimoshi.thread.domain.Bookmark;
 import com.moshimoshi.comment.domain.Comment;
 import com.moshimoshi.common.domain.BaseEntity;
 import com.moshimoshi.message.domain.UserMessage;

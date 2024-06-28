@@ -5,7 +5,6 @@ import com.moshimoshi.common.exception.ErrorCode;
 import com.moshimoshi.thread.domain.Thread;
 import com.moshimoshi.thread.dto.ThreadPostRequest;
 import com.moshimoshi.thread.repository.ThreadRepository;
-import com.moshimoshi.user.domain.Role;
 import com.moshimoshi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -55,7 +54,12 @@ public class ThreadService {
 
     @Transactional
     public void likeThread(Long threadId) {
-        Thread thread = findThread(threadId);
-        thread.like();
+        //todo 게시글 하나 당 좋아요를 한번만 누를 수 있게 구현
+        threadRepository.updateLikeCountById(threadId);
+    }
+
+    @Transactional
+    public void bookmarkThread(Long threadId) {
+
     }
 }

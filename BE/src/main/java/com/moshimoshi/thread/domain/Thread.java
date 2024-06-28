@@ -23,7 +23,7 @@ public class Thread extends BaseEntity {
     private boolean anonymous;
     private int likeCount = 0;
     private int commentSequence = 0;
-    private int numberOfActiveComments = 0; //삭제되지 않은 댓글의 수
+    private int countOfActiveComments = 0; //삭제되지 않은 댓글의 수
     private boolean deleted = false;
     private LocalDateTime deletedAt;
     private String deletedBy;
@@ -52,11 +52,7 @@ public class Thread extends BaseEntity {
         this.commentSequence++; //concurrency issue
         Comment comment = Comment.createComment(user, commentRequest, this);
         this.comments.add(comment);
-        numberOfActiveComments++;
+        countOfActiveComments++;
         return comment;
-    }
-
-    public synchronized int like() {
-        return ++this.likeCount; //concurrency issue
     }
 }

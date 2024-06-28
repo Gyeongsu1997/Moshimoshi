@@ -22,4 +22,10 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
             "where t.id = :id and t.deleted = false")
     int updateDeletedById(Long id, LocalDateTime deletedAt, String deletedBy);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update Thread t " +
+            "set t.likeCount = t.likeCount + 1" +
+            "where t.id = :id and t.deleted = false")
+    void updateLikeCountById(Long id);
+
 }

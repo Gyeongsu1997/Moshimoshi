@@ -50,10 +50,8 @@ public class ThreadController {
     }
 
     @PostMapping("/{threadId}/like")
-    public ResponseEntity<?> likeThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
+    public BaseResponse<?> likeThread(@Login User user, @PathVariable Long threadId) throws URISyntaxException {
         threadService.likeThread(threadId);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER) //303 GET으로 Redirect
-                .location(new URI("/api/threads/" + threadId))
-                .build();
+        return BaseResponse.success();
     }
 }

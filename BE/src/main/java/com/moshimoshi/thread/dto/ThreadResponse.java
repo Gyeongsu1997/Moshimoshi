@@ -14,7 +14,7 @@ public class ThreadResponse {
     private boolean anonymous;
     private int likeCount;
     private Long userId;
-    private int numberOfComments;
+    private int countOfComments;
     private LocalDateTime createdAt;
 
     public static ThreadResponse from(Thread thread) {
@@ -24,7 +24,7 @@ public class ThreadResponse {
                 .anonymous(thread.isAnonymous())
                 .likeCount(thread.getLikeCount())
                 .userId(thread.getUser().getId())
-                .numberOfComments(thread.getNumberOfActiveComments())
+                .countOfComments(thread.getCountOfActiveComments())
                 .createdAt(thread.getCreatedAt())
                 .build();
     }
